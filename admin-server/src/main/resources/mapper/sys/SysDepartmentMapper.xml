@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.admin.module.sys.mapper.SysDepartmentMapper">
+    <select id="selectAllDepartmentListMap" resultType="map">
+        select id, parent_id as parentDept, name as deptName, description as remark, sort_order as orderNo,
+        parent_id as parentDept, FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, status
+        from sys_department
+        where status != 2
+
+        <if test="deptName != null and deptName != ''">
+            AND name like '%${deptName}%'
+        </if>
+
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+
+        order by sort_order asc
+    </select>
+</mapper>
