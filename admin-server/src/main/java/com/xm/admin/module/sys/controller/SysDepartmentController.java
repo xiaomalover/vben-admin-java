@@ -1,6 +1,6 @@
 package com.xm.admin.module.sys.controller;
 
-import com.xm.admin.module.sys.dto.DepartmentRequest;
+import com.xm.admin.module.sys.dto.DepartmentAddEditRequest;
 import com.xm.admin.module.sys.entity.SysDepartment;
 import com.xm.admin.module.sys.service.ISysDepartmentService;
 import com.xm.common.utils.ResultUtil;
@@ -38,13 +38,13 @@ public class SysDepartmentController {
     }
 
     @PostMapping("/add")
-    public Result<Object> add(@Valid @ModelAttribute DepartmentRequest departmentRequest) {
+    public Result<Object> add(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
         SysDepartment sysDepartment = new SysDepartment();
-        sysDepartment.setName(departmentRequest.getDeptName());
-        sysDepartment.setParentId(departmentRequest.getParentId());
-        sysDepartment.setSortOrder(departmentRequest.getSortOrder());
-        sysDepartment.setDescription(departmentRequest.getDescription());
-        sysDepartment.setStatus(departmentRequest.getStatus());
+        sysDepartment.setName(departmentAddEditRequest.getDeptName());
+        sysDepartment.setParentId(departmentAddEditRequest.getParentId());
+        sysDepartment.setSortOrder(departmentAddEditRequest.getSortOrder());
+        sysDepartment.setDescription(departmentAddEditRequest.getDescription());
+        sysDepartment.setStatus(departmentAddEditRequest.getStatus());
         if (departmentService.save(sysDepartment)) {
             return new ResultUtil<>().success(true);
         }
@@ -53,13 +53,13 @@ public class SysDepartmentController {
     }
 
     @PostMapping("/edit")
-    public Result<Object> edit(@Valid @ModelAttribute DepartmentRequest departmentRequest) {
-        SysDepartment sysDepartment = departmentService.getById(departmentRequest.getId());
-        sysDepartment.setName(departmentRequest.getDeptName());
-        sysDepartment.setParentId(departmentRequest.getParentId());
-        sysDepartment.setSortOrder(departmentRequest.getSortOrder());
-        sysDepartment.setDescription(departmentRequest.getDescription());
-        sysDepartment.setStatus(departmentRequest.getStatus());
+    public Result<Object> edit(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
+        SysDepartment sysDepartment = departmentService.getById(departmentAddEditRequest.getId());
+        sysDepartment.setName(departmentAddEditRequest.getDeptName());
+        sysDepartment.setParentId(departmentAddEditRequest.getParentId());
+        sysDepartment.setSortOrder(departmentAddEditRequest.getSortOrder());
+        sysDepartment.setDescription(departmentAddEditRequest.getDescription());
+        sysDepartment.setStatus(departmentAddEditRequest.getStatus());
         if (departmentService.updateById(sysDepartment)) {
             return new ResultUtil<>().success(true);
         }

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class AdminRequest implements Serializable {
+public class DepartmentAddEditRequest implements Serializable {
 
     private static final long serialVersionUID = 5943426068162487167L;
 

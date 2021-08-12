@@ -1,4 +1,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xm.admin.module.sys.mapper.SysAdminMapper">
 
+    <select id="selectAdminList" resultType="map">
+        select id, username as account, FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, email, id, nickname,
+        description as remark, role_id as role, status
+        from sys_admin
+        where status != 2
+
+
+        <if test="conditionMap.account != null and conditionMap.account != ''">
+            AND username like '%${conditionMap.account}%'
+        </if>
+
+        <if test="conditionMap.nickname != null and conditionMap.nickname != ''">
+            AND nickname like '%${conditionMap.nickname}%'
+        </if>
+
+    </select>
+
 </mapper>

@@ -1,15 +1,22 @@
 package com.xm.admin.module.sys.controller;
 
 import cn.hutool.core.map.MapBuilder;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xm.admin.module.sys.dto.DepartmentRequest;
-import com.xm.admin.module.sys.entity.SysAdmin;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xm.admin.module.sys.dto.AdminAddRequest;
+import com.xm.admin.module.sys.dto.AdminEditRequest;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.service.ISysAdminService;
+import com.xm.common.utils.CommonPageUtil;
 import com.xm.common.utils.ResultUtil;
+import com.xm.common.vo.ExtraVo;
 import com.xm.common.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -62,8 +69,30 @@ public class SysAdminController {
     }
 
     @GetMapping("/getAccountList")
-    public Result<Object> getAccountList()
-    {
+    public Result<Object> getAdminList(
+            @ModelAttribute ExtraVo extraVo,
+            @RequestParam(required = false) String account,
+            @RequestParam(required = false) String nickname
+    ) {
+        IPage<SysAdmin> page = new CommonPageUtil<SysAdmin>().initIPage(extraVo);
+
+        Map<String, Object> conditionMap = new HashMap<>(8);
+
+        if (StrUtil.isNotBlank(account)) {
+            conditionMap.put("account", account.trim());
+        }
+
+        if (StrUtil.isNotBlank(nickname)) {
+            conditionMap.put("username", nickname.trim());
+        }
+
+        IPage<SysAdmin> userAssetsLogList = adminService.getAdminList(page, extraVo, conditionMap);
+
+        return new ResultUtil<>().success(userAssetsLogList);
+    }
+
+    /*@GetMapping("/getAccountList")
+    public Result<Object> getAccountList() {
         Object jsonObject = JSONObject.parse("{\n" +
                 "  \"items\": [\n" +
                 "    {\n" +
@@ -170,17 +199,27 @@ public class SysAdminController {
                 "  \"total\": 20\n" +
                 "}");
         return new ResultUtil<>().success(jsonObject);
-    }
+    }*/
 
     @PostMapping("/add")
-    public Result<Object> add(@Valid @ModelAttribute DepartmentRequest departmentRequest) {
-        SysAdmin sysDepartment = new SysAdmin();
-        /*sysDepartment.setName(departmentRequest.getDeptName());
-        sysDepartment.setParentId(departmentRequest.getParentId());
-        sysDepartment.setSortOrder(departmentRequest.getSortOrder());
-        sysDepartment.setDescription(departmentRequest.getDescription());
-        sysDepartment.setStatus(departmentRequest.getStatus());*/
-        if (adminService.save(sysDepartment)) {
+    public Result<Object> add(@Valid @ModelAttribute AdminAddRequest adminAddRequest) {
+        //查询用户是否已存在
+        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysAdmin::getUsername, adminAddRequest.getAccount());
+        int exist = adminService.count(queryWrapper);
+        if (exist > 0) {
+            return new ResultUtil<>().error("用户已存在");
+        }
+
+        SysAdmin sysAdmin = new SysAdmin();
+        sysAdmin.setUsername(adminAddRequest.getAccount());
+        sysAdmin.setNickname(adminAddRequest.getNickname());
+        sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminAddRequest.getPassword()));
+        sysAdmin.setDescription(adminAddRequest.getRemark());
+        sysAdmin.setRoleId(adminAddRequest.getRole());
+        sysAdmin.setDepartmentId(adminAddRequest.getDept());
+        sysAdmin.setStatus(adminAddRequest.getStatus());
+        if (adminService.save(sysAdmin)) {
             return new ResultUtil<>().success(true);
         }
 
@@ -188,14 +227,28 @@ public class SysAdminController {
     }
 
     @PostMapping("/edit")
-    public Result<Object> edit(@Valid @ModelAttribute DepartmentRequest departmentRequest) {
-        SysAdmin sysDepartment = adminService.getById(departmentRequest.getId());
-        /*sysDepartment.setName(departmentRequest.getDeptName());
-        sysDepartment.setParentId(departmentRequest.getParentId());
-        sysDepartment.setSortOrder(departmentRequest.getSortOrder());
-        sysDepartment.setDescription(departmentRequest.getDescription());
-        sysDepartment.setStatus(departmentRequest.getStatus());*/
-        if (adminService.updateById(sysDepartment)) {
+    public Result<Object> edit(@Valid @ModelAttribute AdminEditRequest adminEditRequest) {
+        SysAdmin sysAdmin = adminService.getById(adminEditRequest.getId());
+
+        //查询用户是否已存在
+        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysAdmin::getUsername, adminEditRequest.getAccount());
+        SysAdmin exist = adminService.getOne(queryWrapper);
+        if (ObjectUtil.isNotNull(exist) && !exist.getId().equals(adminEditRequest.getId())) {
+            return new ResultUtil<>().error("用户已存在");
+        }
+
+        sysAdmin.setUsername(adminEditRequest.getAccount());
+        sysAdmin.setNickname(adminEditRequest.getNickname());
+        if (StrUtil.isNotBlank(adminEditRequest.getPassword())) {
+            sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminEditRequest.getPassword()));
+        }
+        sysAdmin.setDescription(adminEditRequest.getRemark());
+        sysAdmin.setRoleId(adminEditRequest.getRole());
+        sysAdmin.setDepartmentId(adminEditRequest.getDept());
+        sysAdmin.setStatus(adminEditRequest.getStatus());
+
+        if (adminService.updateById(sysAdmin)) {
             return new ResultUtil<>().success(true);
         }
 
