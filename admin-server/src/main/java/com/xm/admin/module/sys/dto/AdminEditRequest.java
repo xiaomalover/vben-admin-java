@@ -12,6 +12,7 @@ public class AdminEditRequest implements Serializable {
 
     private static final long serialVersionUID = 8648914193037396878L;
 
+    @NotNull(message = "参数缺失")
     private Integer id;
 
     @NotEmpty(message = "请输入用户名")

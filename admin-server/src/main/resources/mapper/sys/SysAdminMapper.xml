@@ -2,18 +2,23 @@
 <mapper namespace="com.xm.admin.module.sys.mapper.SysAdminMapper">
 
     <select id="selectAdminList" resultType="map">
-        select id, username as account, FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, email, id, nickname,
-        description as remark, role_id as role, status
-        from sys_admin
-        where status != 2
-
+        select a.id, a.username as account, FROM_UNIXTIME(a.created_at, "%Y-%m-%d") as createTime, a.email, a.nickname,
+        a.description as remark, a.role_id as role, r.name as roleName, a.department_id dept, d.name as deptName, a.status
+        from sys_admin a
+        left join sys_department d on d.id = a.department_id
+        left join sys_role r on r.id = a.role_id
+        where a.status != 2
 
         <if test="conditionMap.account != null and conditionMap.account != ''">
-            AND username like '%${conditionMap.account}%'
+            AND a.username like '%${conditionMap.account}%'
+        </if>
+
+        <if test="conditionMap.deptId != null and conditionMap.deptId != ''">
+            AND d.id = #{conditionMap.deptId}
         </if>
 
         <if test="conditionMap.nickname != null and conditionMap.nickname != ''">
-            AND nickname like '%${conditionMap.nickname}%'
+            AND a.nickname like '%${conditionMap.nickname}%'
         </if>
 
     </select>
