@@ -109,7 +109,7 @@ public class SysAdminController {
         sysAdmin.setUsername(adminAddRequest.getAccount());
         sysAdmin.setNickname(adminAddRequest.getNickname());
         sysAdmin.setEmail(adminAddRequest.getEmail());
-        sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminAddRequest.getPassword()));
+        sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminAddRequest.getPwd()));
         sysAdmin.setDescription(adminAddRequest.getRemark());
         sysAdmin.setRoleId(adminAddRequest.getRole());
         sysAdmin.setDepartmentId(adminAddRequest.getDept());
@@ -135,8 +135,8 @@ public class SysAdminController {
 
         sysAdmin.setUsername(adminEditRequest.getAccount());
         sysAdmin.setNickname(adminEditRequest.getNickname());
-        if (StrUtil.isNotBlank(adminEditRequest.getPassword())) {
-            sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminEditRequest.getPassword()));
+        if (StrUtil.isNotBlank(adminEditRequest.getPwd())) {
+            sysAdmin.setPassword(new BCryptPasswordEncoder().encode(adminEditRequest.getPwd()));
         }
         sysAdmin.setEmail(adminEditRequest.getEmail());
         sysAdmin.setDescription(adminEditRequest.getRemark());

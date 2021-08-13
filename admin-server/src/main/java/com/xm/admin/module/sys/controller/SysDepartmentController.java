@@ -41,9 +41,9 @@ public class SysDepartmentController {
     public Result<Object> add(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
         SysDepartment sysDepartment = new SysDepartment();
         sysDepartment.setName(departmentAddEditRequest.getDeptName());
-        sysDepartment.setParentId(departmentAddEditRequest.getParentId());
-        sysDepartment.setSortOrder(departmentAddEditRequest.getSortOrder());
-        sysDepartment.setDescription(departmentAddEditRequest.getDescription());
+        sysDepartment.setParentId(departmentAddEditRequest.getParentDept());
+        sysDepartment.setSortOrder(departmentAddEditRequest.getOrderNo());
+        sysDepartment.setDescription(departmentAddEditRequest.getRemark());
         sysDepartment.setStatus(departmentAddEditRequest.getStatus());
         if (departmentService.save(sysDepartment)) {
             return new ResultUtil<>().success(true);
@@ -56,9 +56,9 @@ public class SysDepartmentController {
     public Result<Object> edit(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
         SysDepartment sysDepartment = departmentService.getById(departmentAddEditRequest.getId());
         sysDepartment.setName(departmentAddEditRequest.getDeptName());
-        sysDepartment.setParentId(departmentAddEditRequest.getParentId());
-        sysDepartment.setSortOrder(departmentAddEditRequest.getSortOrder());
-        sysDepartment.setDescription(departmentAddEditRequest.getDescription());
+        sysDepartment.setParentId(departmentAddEditRequest.getParentDept());
+        sysDepartment.setSortOrder(departmentAddEditRequest.getOrderNo());
+        sysDepartment.setDescription(departmentAddEditRequest.getRemark());
         sysDepartment.setStatus(departmentAddEditRequest.getStatus());
         if (departmentService.updateById(sysDepartment)) {
             return new ResultUtil<>().success(true);

@@ -16,11 +16,11 @@ public class DepartmentAddEditRequest implements Serializable {
     @NotEmpty(message = "请输入部门名称")
     private String deptName;
 
-    private Integer parentId;
+    private Integer parentDept;
 
-    private BigDecimal SortOrder;
+    private BigDecimal orderNo;
 
     private Integer status;
 
-    private String description;
+    private String remark;
 }

@@ -22,7 +22,7 @@ public class AdminEditRequest implements Serializable {
     private String nickname;
 
     @Pattern(regexp="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$", message="密码必须6-18位字母和数字组合")
-    private String password;
+    private String pwd;
 
     @NotEmpty(message = "请输入邮箱")
     @Pattern(regexp="^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", message="邮箱格式不正确")
