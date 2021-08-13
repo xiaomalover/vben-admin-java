@@ -189,7 +189,10 @@ public class SysRoleController {
         //删除所有的权限
         QueryWrapper<SysRolePermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysRolePermission::getRoleId, id);
-        if (!rolePermissionService.remove(queryWrapper)) {
+
+        int hasPermission = rolePermissionService.count(queryWrapper);
+
+        if (hasPermission > 0 && !rolePermissionService.remove(queryWrapper)) {
             throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
         }
 

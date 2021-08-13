@@ -12,8 +12,8 @@
             AND r.name like '%${conditionMap.roleNme}%'
         </if>
 
-        <if test="conditionMap.status != null and conditionMap.status != ''">
-            AND r.id = #{conditionMap.status}
+        <if test="conditionMap.status != null">
+            AND r.status = #{conditionMap.status}
         </if>
 
     </select>
