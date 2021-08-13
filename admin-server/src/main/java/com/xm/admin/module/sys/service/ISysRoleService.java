@@ -1,7 +1,12 @@
 package com.xm.admin.module.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xm.common.vo.ExtraVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +18,20 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysRoleService extends IService<SysRole> {
 
+    /**
+     * 获取角色列表
+     *
+     * @param     page      分业相关
+     * @param     extraVo   附加参数
+     * @param     conditionMap  搜索条件
+     * @return 角色列表
+     */
+    IPage<SysRole> getRoleList(IPage<SysRole> page, ExtraVo extraVo, Map<String, Object> conditionMap);
+
+    /**
+     * 获取所有角色列表
+     *
+     * @return 角色列表
+     */
+    List<SysRole> getAllRoleList();
 }

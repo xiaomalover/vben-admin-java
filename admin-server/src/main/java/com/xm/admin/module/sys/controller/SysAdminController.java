@@ -90,9 +90,9 @@ public class SysAdminController {
             conditionMap.put("nickname", nickname.trim());
         }
 
-        IPage<SysAdmin> userAssetsLogList = adminService.getAdminList(page, extraVo, conditionMap);
+        IPage<SysAdmin> adminList = adminService.getAdminList(page, extraVo, conditionMap);
 
-        return new ResultUtil<>().success(userAssetsLogList);
+        return new ResultUtil<>().success(adminList);
     }
 
     @PostMapping("/add")

@@ -38,5 +38,5 @@ public class SysRole extends BaseEntity{
     /**
      * 状态：0停用;1启用
      */
-    private Boolean status;
+    private Integer status;
 }

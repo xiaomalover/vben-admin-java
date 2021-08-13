@@ -1,10 +1,15 @@
 package com.xm.admin.module.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.mapper.SysRoleMapper;
 import com.xm.admin.module.sys.service.ISysRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xm.common.vo.ExtraVo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,4 +22,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
+    private final SysRoleMapper roleMapper;
+
+    public SysRoleServiceImpl(SysRoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
+    }
+
+    @Override
+    public IPage<SysRole> getRoleList(IPage<SysRole> page, ExtraVo extraVo, Map<String, Object> conditionMap) {
+        return roleMapper.selectRoleList(page, extraVo, conditionMap);
+    }
+
+    @Override
+    public List<SysRole> getAllRoleList() {
+        return roleMapper.selectAllRoleList();
+    }
 }
