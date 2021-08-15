@@ -19,7 +19,7 @@ import javax.validation.Valid;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/menu")
+@RequestMapping("/skeleton/permission")
 public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
