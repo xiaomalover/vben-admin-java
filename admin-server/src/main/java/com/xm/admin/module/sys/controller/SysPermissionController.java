@@ -1,11 +1,14 @@
 package com.xm.admin.module.sys.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xm.admin.module.sys.dto.MenuAddEditRequest;
+import com.xm.admin.module.sys.entity.SysPermission;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -16,8 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/permission")
+@RequestMapping("/skeleton/menu")
 public class SysPermissionController {
+
+    private final ISysPermissionService permissionService;
+
+    public SysPermissionController(ISysPermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
 
     @GetMapping("/getMenuList")
     public Result<Object> getAllMenuList() {
@@ -256,5 +265,49 @@ public class SysPermissionController {
     public Result<Object> getPermCode() {
         Object result = JSONObject.parse("[\"1000\", \"3000\", \"5000\"]");
         return new ResultUtil<>().success(result);
+    }
+
+    @PostMapping("/add")
+    public Result<Object> add(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
+        SysPermission permission = new SysPermission();
+        permission.setType(menuAddEditRequest.getType());
+        permission.setName(menuAddEditRequest.getMenuName());
+        permission.setParentId(menuAddEditRequest.getParentMenu());
+        permission.setSortOrder(menuAddEditRequest.getOrderNo());
+        permission.setStatus(menuAddEditRequest.getStatus());
+        permission.setIcon(menuAddEditRequest.getIcon());
+        permission.setIsExternalLink(menuAddEditRequest.getIsExt());
+        permission.setUrl(menuAddEditRequest.getRoutePath());
+        permission.setIsDisplay(menuAddEditRequest.getShow());
+        permission.setIsCache(menuAddEditRequest.getKeepalive());
+        permission.setPermisionCode(menuAddEditRequest.getPermission());
+
+        if (permissionService.save(permission)) {
+            return new ResultUtil<>().success(true);
+        }
+
+        return new ResultUtil<>().error();
+    }
+
+    @PostMapping("/edit")
+    public Result<Object> edit(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
+        SysPermission permission = permissionService.getById(menuAddEditRequest.getId());
+
+        permission.setType(menuAddEditRequest.getType());
+        permission.setName(menuAddEditRequest.getMenuName());
+        permission.setParentId(menuAddEditRequest.getParentMenu());
+        permission.setSortOrder(menuAddEditRequest.getOrderNo());
+        permission.setStatus(menuAddEditRequest.getStatus());
+        permission.setIcon(menuAddEditRequest.getIcon());
+        permission.setIsExternalLink(menuAddEditRequest.getIsExt());
+        permission.setUrl(menuAddEditRequest.getRoutePath());
+        permission.setIsDisplay(menuAddEditRequest.getShow());
+        permission.setIsCache(menuAddEditRequest.getKeepalive());
+        permission.setPermisionCode(menuAddEditRequest.getPermission());
+        if (permissionService.updateById(permission)) {
+            return new ResultUtil<>().success(true);
+        }
+
+        return new ResultUtil<>().error();
     }
 }
