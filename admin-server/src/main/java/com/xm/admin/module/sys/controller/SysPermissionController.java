@@ -317,4 +317,13 @@ public class SysPermissionController {
 
         return new ResultUtil<>().error();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public Result<Object> edit(@PathVariable String id) {
+        if (permissionService.removeById(id)) {
+            return new ResultUtil<>().success(true);
+        }
+
+        return new ResultUtil<>().error();
+    }
 }

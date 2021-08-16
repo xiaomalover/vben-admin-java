@@ -30,12 +30,7 @@ public class SysPermission extends BaseEntity{
      * 名称
      */
     private String name;
-
-    /**
-     * 标题
-     */
-    private String title;
-
+    
     /**
      * 父类ID
      */

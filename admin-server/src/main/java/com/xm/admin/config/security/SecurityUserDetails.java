@@ -50,10 +50,10 @@ public class SecurityUserDetails extends SysAdmin implements UserDetails {
         if (permissions != null && permissions.size() > 0) {
             for (SysPermission permission : permissions) {
                 if (CommonConstant.PERMISSION_OPERATION.equals(permission.getType())
-                        && StrUtil.isNotBlank(permission.getTitle())
+                        && StrUtil.isNotBlank(permission.getName())
                         && StrUtil.isNotBlank(permission.getPermisionCode())) {
 
-                    authorityList.add(new SimpleGrantedAuthority(permission.getTitle()));
+                    authorityList.add(new SimpleGrantedAuthority(permission.getName()));
                 }
             }
         }
