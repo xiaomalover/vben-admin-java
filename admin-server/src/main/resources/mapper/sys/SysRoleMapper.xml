@@ -16,6 +16,8 @@
             AND r.status = #{conditionMap.status}
         </if>
 
+        group by r.id
+
     </select>
 
     <select id="selectAllRoleList" resultType="map">
