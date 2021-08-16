@@ -261,6 +261,14 @@ public class SysPermissionController {
         return new ResultUtil<>().success(object);
     }
 
+    @GetMapping("getMenuTree")
+    public Result<Object> getMenuTree(
+            @RequestParam(required = false) String menuName,
+            @RequestParam(required = false) Integer status
+    ) {
+        return new ResultUtil<>().success(permissionService.getPermissionTree(menuName, status));
+    }
+
     @GetMapping("/getPermCode")
     public Result<Object> getPermCode() {
         Object result = JSONObject.parse("[\"1000\", \"3000\", \"5000\"]");
@@ -292,7 +300,6 @@ public class SysPermissionController {
     @PostMapping("/edit")
     public Result<Object> edit(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
         SysPermission permission = permissionService.getById(menuAddEditRequest.getId());
-
         permission.setType(menuAddEditRequest.getType());
         permission.setName(menuAddEditRequest.getMenuName());
         permission.setParentId(menuAddEditRequest.getParentMenu());

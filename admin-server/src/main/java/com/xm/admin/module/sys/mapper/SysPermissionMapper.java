@@ -2,6 +2,10 @@ package com.xm.admin.module.sys.mapper;
 
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -11,6 +15,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author xiaomalover <xiaomalover@gmail.com>
  * @since 2021-08-08
  */
+@Repository
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
+    /**
+     * 获取菜单（权限）树
+     *
+     * @param menuName 菜单名
+     * @param status   状态
+     * @return 菜单（权限）树
+     */
+    List<Map<String, Object>> selectAllPermissionListMap(String menuName, Integer status);
 }

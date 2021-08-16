@@ -1,4 +1,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xm.admin.module.sys.mapper.SysPermissionMapper">
+    <select id="selectAllPermissionListMap" resultType="map">
+        select url as path, `name`, component, parent_id as parentMenu
+        from sys_permission
+        where status != 2
 
+        <if test="menuName != null and menuName != ''">
+            AND name like '%${menuName}%'
+        </if>
+
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+
+        order by sort_order asc
+    </select>
 </mapper>
