@@ -187,6 +187,10 @@ public class SysRoleController {
             });
 
             requestList.retainAll(existList);
+        } else {
+            QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
+            queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
+            rolePermissionService.remove(queryWrapperRemove);
         }
 
         return new ResultUtil<>().success(true);
