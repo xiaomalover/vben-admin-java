@@ -29,12 +29,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public IPage<SysRole> getRoleList(IPage<SysRole> page, ExtraVo extraVo, Map<String, Object> conditionMap) {
+    public IPage<Map<String, Object>> getRoleList(IPage<Map<String, Object>> page, ExtraVo extraVo, Map<String, Object> conditionMap) {
         return roleMapper.selectRoleList(page, extraVo, conditionMap);
     }
 
     @Override
-    public List<SysRole> getAllRoleList() {
+    public List<Map<String, Object>> getAllRoleList() {
         return roleMapper.selectAllRoleList();
     }
 }

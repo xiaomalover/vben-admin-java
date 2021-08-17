@@ -1,7 +1,7 @@
 package com.xm.common.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xm.common.entity.MyPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xm.common.vo.ExtraVo;
 
 /**
@@ -17,7 +17,7 @@ public class CommonPageUtil<T> {
      * @return 分页抽象类
      */
     public IPage<T> initIPage(Integer page, Integer pageSize) {
-        IPage<T> iPage = new MyPage<>();
+        IPage<T> iPage = new Page<>();
         if (page == null || page < 1) {
             page = 1;
         }
@@ -31,7 +31,7 @@ public class CommonPageUtil<T> {
 
     public IPage<T> initIPage(ExtraVo extraVo) {
 
-        IPage<T> iPage = new MyPage<>();
+        IPage<T> iPage = new Page<>();
         int page = extraVo.getPage();
         int pageSize = extraVo.getPageSize();
 

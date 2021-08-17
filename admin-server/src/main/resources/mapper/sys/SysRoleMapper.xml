@@ -3,7 +3,7 @@
 
     <select id="selectRoleList" resultType="map">
         select r.id, r.`name` as roleName, r.code as roleValue, r.status, r.description as remark, FROM_UNIXTIME(r.created_at, "%Y-%m-%d") as createTime,
-        concat(p.permission_id) as permissionIds
+        ifnull(group_concat(p.permission_id), "") as menu
         from sys_role r
         left join sys_role_permission p on p.role_id = r.id
         where r.status != 2
@@ -22,10 +22,11 @@
 
     <select id="selectAllRoleList" resultType="map">
         select r.id, r.`name` as roleName, r.code as roleValue, r.status, r.description as remark, FROM_UNIXTIME(r.created_at, "%Y-%m-%d") as createTime,
-        concat(p.permission_id) as permissionIds
+        ifnull(group_concat(p.permission_id), "") as menu
         from sys_role r
         left join sys_role_permission p on p.role_id = r.id
         where r.status != 2
+        group by r.id
     </select>
 
 </mapper>

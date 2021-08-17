@@ -1,5 +1,6 @@
 package com.xm.admin.module.sys.controller;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -51,7 +52,7 @@ public class SysRoleController {
             @RequestParam(required = false) String roleNme,
             @RequestParam(required = false) Integer status
     ) {
-        IPage<SysRole> page = new CommonPageUtil<SysRole>().initIPage(extraVo);
+        IPage<Map<String, Object>> page = new CommonPageUtil<Map<String, Object>>().initIPage(extraVo);
 
         Map<String, Object> conditionMap = new HashMap<>(8);
 
@@ -63,14 +64,26 @@ public class SysRoleController {
             conditionMap.put("status", status);
         }
 
-        IPage<SysRole> roleList = roleService.getRoleList(page, extraVo, conditionMap);
+        IPage<Map<String, Object>> roleList = roleService.getRoleList(page, extraVo, conditionMap);
+
+        List<Map<String, Object>> list = roleList.getRecords();
+        list.forEach(x -> {
+            List<Integer> menus = new ArrayList<>();
+            if (ObjectUtil.isNotNull(x.get("menu")) && StrUtil.isNotBlank(x.get("menu").toString())) {
+                String[] menuStr = x.get("menu").toString().split(",");
+                for (String s : menuStr) {
+                    menus.add(Convert.toInt(s));
+                }
+            }
+            x.put("menu", menus);
+        });
 
         return new ResultUtil<>().success(roleList);
     }
 
     @GetMapping("/getAllRoleList")
     public Result<Object> getAllRoleList() {
-        List<SysRole> roleList = roleService.getAllRoleList();
+        List<Map<String, Object>> roleList = roleService.getAllRoleList();
         return new ResultUtil<>().success(roleList);
     }
 

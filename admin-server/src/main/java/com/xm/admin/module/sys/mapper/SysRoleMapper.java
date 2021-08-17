@@ -29,12 +29,12 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param     conditionMap  搜索条件
      * @return 角色列表
      */
-    IPage<SysRole> selectRoleList(IPage<SysRole> page, @Param("extraVo") ExtraVo extraVo, @Param("conditionMap") Map<String, Object> conditionMap);
+    IPage<Map<String, Object>> selectRoleList(IPage<Map<String, Object>> page, @Param("extraVo") ExtraVo extraVo, @Param("conditionMap") Map<String, Object> conditionMap);
 
     /**
      * 获取所有角色列表
      *
      * @return 角色列表
      */
-    List<SysRole> selectAllRoleList();
+    List<Map<String, Object>> selectAllRoleList();
 }

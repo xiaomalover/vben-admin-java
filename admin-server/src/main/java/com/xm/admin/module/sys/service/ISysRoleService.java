@@ -26,12 +26,12 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param     conditionMap  搜索条件
      * @return 角色列表
      */
-    IPage<SysRole> getRoleList(IPage<SysRole> page, ExtraVo extraVo, Map<String, Object> conditionMap);
+    IPage<Map<String, Object>> getRoleList(IPage<Map<String, Object>> page, ExtraVo extraVo, Map<String, Object> conditionMap);
 
     /**
      * 获取所有角色列表
      *
      * @return 角色列表
      */
-    List<SysRole> getAllRoleList();
+    List<Map<String, Object>> getAllRoleList();
 }
