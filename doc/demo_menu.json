@@ -1,0 +1,226 @@
+[
+  {
+    "redirect": "/dashboard/analysis",
+    "path": "/dashboard",
+    "component": "LAYOUT",
+    "children": [
+      {
+        "path": "analysis",
+        "component": "/dashboard/analysis/index",
+        "meta": {
+          "currentActiveMenu": "/dashboard",
+          "hideMenu": true,
+          "icon": "bx:bx-home",
+          "hideBreadcrumb": true,
+          "title": "routes.dashboard.analysis"
+        },
+        "name": "Analysis"
+      },
+      {
+        "path": "workbench",
+        "component": "/dashboard/workbench/index",
+        "meta": {
+          "currentActiveMenu": "/dashboard",
+          "hideMenu": true,
+          "icon": "bx:bx-home",
+          "hideBreadcrumb": true,
+          "title": "routes.dashboard.workbench"
+        },
+        "name": "Workbench"
+      }
+    ],
+    "meta": {
+      "icon": "bx:bx-home",
+      "hideChildrenInMenu": true,
+      "title": "routes.dashboard.dashboard"
+    },
+    "name": "Dashboard"
+  },
+  {
+    "redirect": "/permission/front/page",
+    "path": "/permission",
+    "component": "LAYOUT",
+    "children": [
+      {
+        "path": "back",
+        "children": [
+          {
+            "path": "page",
+            "component": "/demo/permission/back/index",
+            "meta": {
+              "title": "routes.demo.permission.backPage"
+            },
+            "name": "BackAuthPage"
+          },
+          {
+            "path": "btn",
+            "component": "/demo/permission/back/Btn",
+            "meta": {
+              "title": "routes.demo.permission.backBtn"
+            },
+            "name": "BackAuthBtn"
+          }
+        ],
+        "meta": {
+          "title": "routes.demo.permission.back"
+        },
+        "name": "PermissionBackDemo"
+      }
+    ],
+    "meta": {
+      "icon": "carbon:user-role",
+      "title": "routes.demo.permission.permission"
+    },
+    "name": "Permission"
+  },
+  {
+    "redirect": "/level/menu1/menu1-1",
+    "path": "/level",
+    "component": "LAYOUT",
+    "children": [
+      {
+        "path": "menu1",
+        "children": [
+          {
+            "path": "menu1-1",
+            "children": [
+              {
+                "path": "menu1-1-1",
+                "component": "/demo/level/Menu111",
+                "meta": {
+                  "title": "Menu111"
+                },
+                "name": "Menu111Demo"
+              }
+            ],
+            "meta": {
+              "title": "Menu1-1"
+            },
+            "name": "Menu11Demo"
+          },
+          {
+            "path": "menu1-2",
+            "component": "/demo/level/Menu12",
+            "meta": {
+              "title": "Menu1-2"
+            },
+            "name": "Menu12Demo"
+          }
+        ],
+        "meta": {
+          "title": "Menu1"
+        },
+        "name": "Menu1Demo"
+      },
+      {
+        "path": "menu2",
+        "component": "/demo/level/Menu2",
+        "meta": {
+          "title": "Menu2"
+        },
+        "name": "Menu2Demo"
+      }
+    ],
+    "meta": {
+      "icon": "carbon:user-role",
+      "title": "routes.demo.level.level"
+    },
+    "name": "Level"
+  },
+  {
+    "redirect": "/system/account",
+    "path": "/system",
+    "component": "LAYOUT",
+    "children": [
+      {
+        "path": "account",
+        "component": "/demo/system/account/index",
+        "meta": {
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.account"
+        },
+        "name": "AccountManagement"
+      },
+      {
+        "path": "account_detail/:id",
+        "component": "/demo/system/account/AccountDetail",
+        "meta": {
+          "currentActiveMenu": "/system/account",
+          "hideMenu": true,
+          "showMenu": false,
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.account_detail"
+        },
+        "name": "AccountDetail"
+      },
+      {
+        "path": "role",
+        "component": "/demo/system/role/index",
+        "meta": {
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.role"
+        },
+        "name": "RoleManagement"
+      },
+      {
+        "path": "menu",
+        "component": "/demo/system/menu/index",
+        "meta": {
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.menu"
+        },
+        "name": "MenuManagement"
+      },
+      {
+        "path": "dept",
+        "component": "/demo/system/dept/index",
+        "meta": {
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.dept"
+        },
+        "name": "DeptManagement"
+      },
+      {
+        "path": "changePassword",
+        "component": "/demo/system/password/index",
+        "meta": {
+          "ignoreKeepAlive": true,
+          "title": "routes.demo.system.password"
+        },
+        "name": "ChangePassword"
+      }
+    ],
+    "meta": {
+      "icon": "ion:settings-outline",
+      "title": "routes.demo.system.moduleName"
+    },
+    "name": "System"
+  },
+  {
+    "path": "/link",
+    "component": "LAYOUT",
+    "children": [
+      {
+        "path": "doc",
+        "meta": {
+          "frameSrc": "https://vvbin.cn/doc-next/",
+          "title": "routes.demo.iframe.doc"
+        },
+        "name": "Doc"
+      },
+      {
+        "path": "https://vvbin.cn/doc-next/",
+        "component": "LAYOUT",
+        "meta": {
+          "title": "routes.demo.iframe.docExternal"
+        },
+        "name": "DocExternal"
+      }
+    ],
+    "meta": {
+      "icon": "ion:tv-outline",
+      "title": "routes.demo.iframe.frame"
+    },
+    "name": "Link"
+  }
+]

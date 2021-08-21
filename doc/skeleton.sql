@@ -44,9 +44,9 @@ CREATE TABLE `sys_admin` (
 /*Data for the table `sys_admin` */
 
 insert  into `sys_admin`(`id`,`username`,`password`,`avatar`,`description`,`email`,`mobile`,`nickname`,`sex`,`status`,`role_id`,`department_id`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,'admin','$2a$10$RGLnlZ9VkE8e/DxNOQ3MOOait9cbuqjhI6vlmiQmPmyW.86ADysNa','','超级管理员','DM@gmail.com','13888888888','超级管理员',1,1,2,2,1582959143,'admin',1628857735,'admin'),
+(1,'admin','$2a$10$XaPueYVD74oGnlJJv/GzqunAvy8E6FBCcaL3PfxIvQ5p7B1/ik8L2','','超级管理员','DM@gmail.com','13888888888','超级管理员',1,1,9,1,1582959143,'admin',1629521450,'admin'),
 (2,'zhanshan','$2a$10$ntE8WKJ5nKFqBpUU7IV59uWeHRN3EI/5L6EbkjUeXA9S7mYhTLB2u','','测试人员1','admin@qq.com','13555555555','张三',1,1,1,3,1626834498,'admin',1628836038,'admin'),
-(4,'wangwu','$2a$10$u60W0dYcaNKydj1kut8cFudh83pwWuUqdHEGH430.8vjqcJDCd85K','','这是王大爷','b@ccc.com','','王五',0,1,2,2,1628822166,'admin',1628836045,'admin');
+(4,'wangwu','$2a$10$u60W0dYcaNKydj1kut8cFudh83pwWuUqdHEGH430.8vjqcJDCd85K','','这是王大爷','b@ccc.com','','王五1',0,1,9,16,1628822166,'admin',1629521456,'admin');
 
 /*Table structure for table `sys_admin_log` */
 
@@ -64,7 +64,7 @@ CREATE TABLE `sys_admin_log` (
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '操作人',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='请求日志';
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='请求日志';
 
 /*Data for the table `sys_admin_log` */
 
@@ -80,7 +80,15 @@ insert  into `sys_admin_log`(`id`,`cost_time`,`ip`,`ip_info`,`name`,`request_par
 (9,44,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"cjkz\",\"captchaId\":\"7f31f064e79b40fe9564ff4132c87f91\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628856515),
 (10,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"kilt\",\"captchaId\":\"3b9cdf7ce6f04dccbfbf92f1906f528e\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628860258),
 (11,39,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"fi6y\",\"captchaId\":\"2db8e4b1500640e5984045a3daaca240\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628996765),
-(12,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"9dgy\",\"captchaId\":\"f6a6f297a21847d5be8b741dd06de69f\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629087977);
+(12,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"9dgy\",\"captchaId\":\"f6a6f297a21847d5be8b741dd06de69f\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629087977),
+(13,17,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"cthe\",\"captchaId\":\"ada8d2d6663646b5a3890f7045e43455\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629091952),
+(14,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"4xvu\",\"captchaId\":\"4dd7cd85b37f4114a50b74be46d5bd89\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629174752),
+(15,17,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"jdqr\",\"captchaId\":\"1858248feb7a4817bfbbb39a4b80b605\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629178541),
+(16,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"h3uj\",\"captchaId\":\"4e87506323704cb6a868e779782b31d6\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629182865),
+(17,55,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"M4NK\",\"captchaId\":\"f5d13d9847ef4cc6a5316ef4b3d1be68\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265244),
+(18,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"NQHA\",\"captchaId\":\"1971dcc5f32548ceba53e4e06cf8312c\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265466),
+(19,52,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uxcd\",\"captchaId\":\"5319f09c310141ce9403be451f575547\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520908),
+(20,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"yzjo\",\"captchaId\":\"c77ffaf8fe8d40eb8ad02ec10c07aa7d\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520937);
 
 /*Table structure for table `sys_department` */
 
@@ -138,16 +146,18 @@ CREATE TABLE `sys_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 /*Data for the table `sys_permission` */
 
 insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,0,'系统管理',0,1.00,'ant-design:setting-outlined','/system','','',0,0,0,0,1629079245,'admin',1629079245,'admin'),
-(2,1,'账号管理',1,1.00,'ant-design:usergroup-add-outlined','/system/account','','system:account',0,0,0,1,1629088689,'admin',1629088689,'admin'),
-(3,1,'角色管理',1,2.00,'ant-design:experiment-filled','system/role','','system:role',0,0,0,1,1629088812,'admin',1629088812,'admin'),
-(4,1,'菜单管理',1,3.00,'ant-design:unordered-list-outlined','system/menu','','system:menu',0,0,0,1,1629088897,'admin',1629088897,'admin'),
-(5,1,'部门管理',1,3.00,'ant-design:appstore-filled','system/dept','','system:dept',0,0,0,1,1629088944,'admin',1629088944,'admin');
+(1,0,'系统管理',0,1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629090131,'admin'),
+(2,1,'账号管理',1,1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629522324,'admin'),
+(3,1,'角色管理',1,2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629522302,'admin'),
+(4,1,'菜单管理',1,3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629522274,'admin'),
+(5,1,'部门管理',1,3.00,'ant-design:appstore-filled','system/dept','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629522294,'admin'),
+(7,0,'主页',0,1.00,'ant-design:home-outlined','/dashboard','','',1,1,0,0,1629521692,'admin',1629521692,'admin'),
+(8,1,'分析',7,1.00,'ant-design:home-outlined','analysis','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629522183,'admin');
 
 /*Table structure for table `sys_role` */
 
@@ -169,8 +179,8 @@ CREATE TABLE `sys_role` (
 /*Data for the table `sys_role` */
 
 insert  into `sys_role`(`id`,`name`,`code`,`description`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1628835553,'admin'),
-(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1629089055,'admin');
+(1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1629179250,'admin'),
+(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1629522355,'admin');
 
 /*Table structure for table `sys_role_permission` */
 
@@ -185,16 +195,23 @@ CREATE TABLE `sys_role_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
 
 /*Data for the table `sys_role_permission` */
 
 insert  into `sys_role_permission`(`id`,`permission_id`,`role_id`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(10,5,9,1629089055,'admin',1629089055,'admin'),
-(9,4,9,1629089055,'admin',1629089055,'admin'),
-(8,3,9,1629089055,'admin',1629089055,'admin'),
-(7,2,9,1629089055,'admin',1629089055,'admin'),
-(6,1,9,1629089055,'admin',1629089055,'admin');
+(22,4,1,1629179173,'admin',1629179173,'admin'),
+(50,1,9,1629520966,'admin',1629520966,'admin'),
+(21,1,1,1629179173,'admin',1629179173,'admin'),
+(49,3,9,1629520966,'admin',1629520966,'admin'),
+(48,5,9,1629520962,'admin',1629520962,'admin'),
+(14,2,1,1629179015,'admin',1629179015,'admin'),
+(47,4,9,1629520962,'admin',1629520962,'admin'),
+(20,3,1,1629179158,'admin',1629179158,'admin'),
+(17,5,1,1629179015,'admin',1629179015,'admin'),
+(46,2,9,1629520962,'admin',1629520962,'admin'),
+(51,7,9,1629522355,'admin',1629522355,'admin'),
+(52,8,9,1629522355,'admin',1629522355,'admin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
