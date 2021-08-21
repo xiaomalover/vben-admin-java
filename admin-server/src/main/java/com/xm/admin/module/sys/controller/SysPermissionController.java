@@ -289,6 +289,7 @@ public class SysPermissionController {
         permission.setIsDisplay(menuAddEditRequest.getShow());
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
+        permission.setComponent(menuAddEditRequest.getComponent());
 
         if (permissionService.save(permission)) {
             return new ResultUtil<>().success(true);
@@ -311,6 +312,7 @@ public class SysPermissionController {
         permission.setIsDisplay(menuAddEditRequest.getShow());
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
+        permission.setComponent(menuAddEditRequest.getComponent());
         if (permissionService.updateById(permission)) {
             return new ResultUtil<>().success(true);
         }
