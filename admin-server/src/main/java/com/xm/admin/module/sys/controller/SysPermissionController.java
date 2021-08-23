@@ -9,6 +9,8 @@ import com.xm.common.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,14 +31,20 @@ public class SysPermissionController {
     }
 
     @GetMapping("/getMenuList")
+    public Result<Object> getAllMenuList1() {
+        List<Map<String, Object>> menuTree = permissionService.getMenuTree();
+        return new ResultUtil<>().success(menuTree);
+    }
+
+    @GetMapping("/getMenuListDemo")
     public Result<Object> getAllMenuList() {
         Object object = JSONObject.parse(
                 "[\n" +
                         "        {\n" +
                         "            \"path\": \"/dashboard\",\n" +
                         "            \"name\": \"Dashboard\",\n" +
-                        "            \"component\": \"LAYOUT\",\n" +
-                        "            \"redirect\": \"/dashboard/analysis\",\n" +
+                        "            \"component\": \"/dashboard/analysis/index\",\n" +
+                       // "            \"redirect\": \"/dashboard/analysis\",\n" +
                         "            \"meta\": {\n" +
                         "                \"title\": \"routes.dashboard.dashboard\",\n" +
                         "                \"hideChildrenInMenu\": true,\n" +

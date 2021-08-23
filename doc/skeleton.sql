@@ -64,7 +64,7 @@ CREATE TABLE `sys_admin_log` (
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '操作人',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='请求日志';
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='请求日志';
 
 /*Data for the table `sys_admin_log` */
 
@@ -88,7 +88,11 @@ insert  into `sys_admin_log`(`id`,`cost_time`,`ip`,`ip_info`,`name`,`request_par
 (17,55,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"M4NK\",\"captchaId\":\"f5d13d9847ef4cc6a5316ef4b3d1be68\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265244),
 (18,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"NQHA\",\"captchaId\":\"1971dcc5f32548ceba53e4e06cf8312c\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265466),
 (19,52,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uxcd\",\"captchaId\":\"5319f09c310141ce9403be451f575547\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520908),
-(20,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"yzjo\",\"captchaId\":\"c77ffaf8fe8d40eb8ad02ec10c07aa7d\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520937);
+(20,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"yzjo\",\"captchaId\":\"c77ffaf8fe8d40eb8ad02ec10c07aa7d\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520937),
+(21,77,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uzpt\",\"captchaId\":\"8d4a7d65a3ac4fdaa9ba038d793c46b9\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537456),
+(22,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"etsb\",\"captchaId\":\"f2d653271edb4561b24391d7ca478837\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537468),
+(23,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"sahu\",\"captchaId\":\"9f04dc9547c34603b583414ba1d894e8\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537535),
+(24,56,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"1wex\",\"captchaId\":\"a84eeea087724820a77e25e074a79bbe\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629693023);
 
 /*Table structure for table `sys_department` */
 
@@ -156,8 +160,7 @@ insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`sort_order`,`icon`
 (3,1,'角色管理',1,2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629522302,'admin'),
 (4,1,'菜单管理',1,3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629522274,'admin'),
 (5,1,'部门管理',1,3.00,'ant-design:appstore-filled','system/dept','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629522294,'admin'),
-(7,0,'主页',0,1.00,'ant-design:home-outlined','/dashboard','','',1,1,0,0,1629521692,'admin',1629521692,'admin'),
-(8,1,'分析',7,1.00,'ant-design:home-outlined','analysis','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629522183,'admin');
+(6,1,'首页',0,0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629696311,'admin');
 
 /*Table structure for table `sys_role` */
 
