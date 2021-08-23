@@ -26,4 +26,12 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @return 菜单（权限）树
      */
     List<Map<String, Object>> selectAllPermissionListMap(String menuName, Integer status);
+
+    /**
+     * 获取菜单树
+     *
+     * @param userId 用户ID
+     * @return 菜单树
+     */
+    List<Map<String, Object>> selectUserPermissionListMap(Integer userId);
 }

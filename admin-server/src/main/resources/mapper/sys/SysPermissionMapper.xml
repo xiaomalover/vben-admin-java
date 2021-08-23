@@ -17,4 +17,20 @@
 
         order by sort_order asc
     </select>
+
+    <select id="selectUserPermissionListMap" resultType="map">
+        select p.id, p.url as routePath, p.`name` as menuName, p.component, p.parent_id as parentMenu, p.`type`, p.sort_order as orderNo,
+        p.icon, p.permision_code as permission, p.status, p.is_external_link as isExt, p.is_cache as keepalive, p.is_display as `show`,
+        FROM_UNIXTIME(p.created_at, "%Y-%m-%d") as createTime
+        from sys_permission as p
+        left join sys_role_permission as rp on rp.permission_id = p.id
+        left join sys_admin as a on a.role_id = rp.role_id
+        where p.status != 2
+
+        <if test="userId != null">
+            AND a.id = #{userId}
+        </if>
+
+        order by p.sort_order asc
+    </select>
 </mapper>

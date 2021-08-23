@@ -1,11 +1,19 @@
 package com.xm.admin.module.sys.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.module.sys.dto.MenuAddEditRequest;
+import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
+import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,18 +34,45 @@ public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
 
-    public SysPermissionController(ISysPermissionService permissionService) {
+    private final ISysAdminService sysAdminService;
+
+    public SysPermissionController(ISysPermissionService permissionService, ISysAdminService sysAdminService) {
         this.permissionService = permissionService;
+        this.sysAdminService = sysAdminService;
     }
 
     @GetMapping("/getMenuList")
-    public Result<Object> getAllMenuList1() {
-        List<Map<String, Object>> menuTree = permissionService.getMenuTree();
+    public Result<Object> getAllMenuList() {
+
+        String username = "";
+        //获取当前用户ID
+        if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext())) {
+            if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext().getAuthentication())) {
+                if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
+                    UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    if (ObjectUtil.isNotNull(user)) {
+                        username = user.getUsername();
+                    }
+                }
+            }
+        }
+        if (StrUtil.isBlank(username)) {
+            return new ResultUtil<>().success("用户未登录");
+        }
+
+        //查找用户ID
+        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        SysAdmin admin = sysAdminService.getOne(queryWrapper);
+        if (ObjectUtil.isNull(admin)) {
+            return new ResultUtil<>().success("无效用户");
+        }
+        List<Map<String, Object>> menuTree = permissionService.getMenuTree(admin.getId());
         return new ResultUtil<>().success(menuTree);
     }
 
     @GetMapping("/getMenuListDemo")
-    public Result<Object> getAllMenuList() {
+    public Result<Object> getAllMenuListDemo() {
         Object object = JSONObject.parse(
                 "[\n" +
                         "        {\n" +

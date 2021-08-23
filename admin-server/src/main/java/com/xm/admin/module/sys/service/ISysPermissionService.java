@@ -29,5 +29,5 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * 获取菜单树
      * @return 菜单树
      */
-    List<Map<String, Object>> getMenuTree();
+    List<Map<String, Object>> getMenuTree(Integer userId);
 }

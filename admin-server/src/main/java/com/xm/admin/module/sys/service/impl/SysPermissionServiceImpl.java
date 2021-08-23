@@ -37,8 +37,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<Map<String, Object>> getMenuTree() {
-        List<Map<String, Object>> menuList = permissionMapper.selectAllPermissionListMap(null, null);
+    public List<Map<String, Object>> getMenuTree(Integer userId) {
+
+        List<Map<String, Object>> menuList = permissionMapper.selectUserPermissionListMap(userId);
 
         //格式化成后端菜单需要的格式
         List<Map<String, Object>> customList = new ArrayList<>();
