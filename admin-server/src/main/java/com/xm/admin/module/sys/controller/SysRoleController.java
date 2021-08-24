@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xm.admin.config.exception.SkeletonException;
 import com.xm.admin.module.sys.dto.RoleAddEditRequest;
+import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.entity.SysRolePermission;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.admin.module.sys.service.ISysRolePermissionService;
 import com.xm.admin.module.sys.service.ISysRoleService;
 import com.xm.common.enums.ResultCodeEnums;
@@ -20,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -41,9 +40,12 @@ public class SysRoleController {
 
     private final ISysRolePermissionService rolePermissionService;
 
-    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService) {
+    private final ISysPermissionService permissionService;
+
+    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService, ISysPermissionService permissionService) {
         this.roleService = roleService;
         this.rolePermissionService = rolePermissionService;
+        this.permissionService = permissionService;
     }
 
     @GetMapping("/getRoleList")
@@ -164,14 +166,20 @@ public class SysRoleController {
             List<Integer> sameList = new ArrayList<>(requestList);
             sameList.retainAll(existList);
 
-            //数据库有，请求的没有，要删除
+            //数据库有，请求的没有，要删除(有子权限的不能删除)
             existList.removeAll(sameList);
             existList.forEach(x -> {
-                QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
-                queryWrapperRemove.lambda().eq(SysRolePermission::getPermissionId, x);
-                queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
-                if (!rolePermissionService.remove(queryWrapperRemove)) {
-                    throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
+                permissionQueryWrapper.lambda().ne(SysPermission::getId, x)
+                        .apply(x > 0, "FIND_IN_SET ('" + x + "', path)");
+                int childCount =  permissionService.count(permissionQueryWrapper);
+                if (childCount == 0) {
+                    QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
+                    queryWrapperRemove.lambda().eq(SysRolePermission::getPermissionId, x);
+                    queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
+                    if (!rolePermissionService.remove(queryWrapperRemove)) {
+                        throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                    }
                 }
             });
 

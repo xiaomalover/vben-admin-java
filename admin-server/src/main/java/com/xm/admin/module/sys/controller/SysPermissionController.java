@@ -9,10 +9,12 @@ import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.admin.module.sys.service.ISysPermissionService;
+import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -319,7 +321,8 @@ public class SysPermissionController {
     }
 
     @PostMapping("/add")
-    public Result<Object> add(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Object> add(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) throws Exception {
         SysPermission permission = new SysPermission();
         permission.setType(menuAddEditRequest.getType());
         permission.setName(menuAddEditRequest.getMenuName());
@@ -335,6 +338,22 @@ public class SysPermissionController {
         permission.setComponent(menuAddEditRequest.getComponent());
 
         if (permissionService.save(permission)) {
+
+            String path = "";
+            if (menuAddEditRequest.getParentMenu() > 0) {
+                SysPermission parent = permissionService.getById(menuAddEditRequest.getParentMenu());
+                if (ObjectUtil.isNull(parent)) {
+                    throw new Exception("父级菜单不存在");
+                }
+                path = parent.getPath();
+            }
+
+            path = path + (path.length() > 0 ? "," : "") + permission.getId();
+            permission.setPath(path);
+            if (!permissionService.updateById(permission)) {
+                throw new Exception(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            }
+
             return new ResultUtil<>().success(true);
         }
 
@@ -342,7 +361,8 @@ public class SysPermissionController {
     }
 
     @PostMapping("/edit")
-    public Result<Object> edit(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Object> edit(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) throws Exception {
         SysPermission permission = permissionService.getById(menuAddEditRequest.getId());
         permission.setType(menuAddEditRequest.getType());
         permission.setName(menuAddEditRequest.getMenuName());
@@ -357,6 +377,22 @@ public class SysPermissionController {
         permission.setPermisionCode(menuAddEditRequest.getPermission());
         permission.setComponent(menuAddEditRequest.getComponent());
         if (permissionService.updateById(permission)) {
+
+            String path = "";
+            if (menuAddEditRequest.getParentMenu() > 0) {
+                SysPermission parent = permissionService.getById(menuAddEditRequest.getParentMenu());
+                if (ObjectUtil.isNull(parent)) {
+                    throw new Exception("父级菜单不存在");
+                }
+                path = parent.getPath();
+            }
+
+            path = path + (path.length() > 0 ? "," : "") + permission.getId();
+            permission.setPath(path);
+            if (!permissionService.updateById(permission)) {
+                throw new Exception(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            }
+
             return new ResultUtil<>().success(true);
         }
 
