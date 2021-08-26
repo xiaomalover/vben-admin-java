@@ -1,16 +1,24 @@
 package com.xm.admin.module.sys.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.xm.admin.module.sys.entity.SysAdmin;
+import com.xm.admin.module.sys.entity.SysDepartment;
+import com.xm.admin.module.sys.entity.SysPermission;
+import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.mapper.SysAdminMapper;
+import com.xm.admin.module.sys.mapper.SysPermissionMapper;
+import com.xm.admin.module.sys.mapper.SysRoleMapper;
 import com.xm.admin.module.sys.service.ISysAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xm.admin.module.sys.service.ISysDepartmentService;
 import com.xm.common.enums.CommonStatus;
 import com.xm.common.vo.ExtraVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,8 +34,17 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     private final SysAdminMapper adminMapper;
 
-    public SysAdminServiceImpl(SysAdminMapper adminMapper) {
+    private final ISysDepartmentService departmentService;
+
+    private final SysRoleMapper roleMapper;
+
+    private final SysPermissionMapper permissionMapper;
+
+    public SysAdminServiceImpl(SysAdminMapper adminMapper, ISysDepartmentService departmentService, SysRoleMapper roleMapper, SysPermissionMapper permissionMapper) {
         this.adminMapper = adminMapper;
+        this.departmentService = departmentService;
+        this.roleMapper = roleMapper;
+        this.permissionMapper = permissionMapper;
     }
 
     @Override
@@ -36,7 +53,28 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         QueryWrapper<SysAdmin> adminQueryWrapper = new QueryWrapper<>();
         adminQueryWrapper.eq("username", username);
         adminQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED.getStatus());
-        return getOne(adminQueryWrapper);
+
+        SysAdmin admin = getOne(adminQueryWrapper);
+
+        if (!ObjectUtils.isEmpty(admin)) {
+            // 关联部门
+            if (ObjectUtil.isNotNull(admin.getDepartmentId())) {
+                SysDepartment department = departmentService.getById(admin.getDepartmentId());
+                admin.setDepartmentTitle(department.getName());
+            }
+
+            // 关联角色
+            SysRole roleList = roleMapper.selectById(admin.getId());
+            if (!ObjectUtils.isEmpty(roleList)) {
+                admin.setRole(roleList);
+            }
+
+            // 关联权限菜单
+            List<SysPermission> permissionList = permissionMapper.findByUserId(admin.getId());
+            admin.setPermissions(permissionList);
+            return admin;
+        }
+        return null;
     }
 
     @Override

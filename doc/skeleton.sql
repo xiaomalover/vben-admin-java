@@ -482,12 +482,12 @@ CREATE TABLE `sys_permission` (
 /*Data for the table `sys_permission` */
 
 insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,0,'系统管理',0,'',1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629090131,'admin'),
-(2,1,'账号管理',1,'',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629522324,'admin'),
-(3,1,'角色管理',1,'',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629522302,'admin'),
-(4,1,'菜单管理',1,'',3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629522274,'admin'),
-(5,1,'部门管理',1,'',3.00,'ant-design:appstore-filled','system/dept','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629522294,'admin'),
-(6,1,'首页',0,'',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629696311,'admin');
+(1,0,'系统管理',0,'1',1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629958524,'admin'),
+(2,1,'账号管理',1,'1,2',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629958526,'admin'),
+(3,1,'角色管理',1,'1,3',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629958529,'admin'),
+(4,1,'菜单管理',1,'1,4',3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629958531,'admin'),
+(5,1,'部门管理',1,'1,5',3.00,'ant-design:appstore-filled','system/dept','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629958533,'admin'),
+(6,1,'首页',0,'6',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629958521,'admin');
 
 /*Table structure for table `sys_role` */
 
@@ -510,7 +510,7 @@ CREATE TABLE `sys_role` (
 
 insert  into `sys_role`(`id`,`name`,`code`,`description`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1629179250,'admin'),
-(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1629941625,'admin');
+(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1629958443,'admin');
 
 /*Table structure for table `sys_role_permission` */
 
@@ -525,21 +525,19 @@ CREATE TABLE `sys_role_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
 
 /*Data for the table `sys_role_permission` */
 
 insert  into `sys_role_permission`(`id`,`permission_id`,`role_id`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (22,4,1,1629179173,'admin',1629179173,'admin'),
-(50,1,9,1629520966,'admin',1629520966,'admin'),
 (21,1,1,1629179173,'admin',1629179173,'admin'),
 (49,3,9,1629520966,'admin',1629520966,'admin'),
-(48,5,9,1629520962,'admin',1629520962,'admin'),
 (14,2,1,1629179015,'admin',1629179015,'admin'),
 (47,4,9,1629520962,'admin',1629520962,'admin'),
 (20,3,1,1629179158,'admin',1629179158,'admin'),
 (17,5,1,1629179015,'admin',1629179015,'admin'),
-(46,2,9,1629520962,'admin',1629520962,'admin'),
+(54,2,9,1629958420,'admin',1629958420,'admin'),
 (53,6,9,1629941625,'admin',1629941625,'admin');
 
 /*Table structure for table `user_assets` */

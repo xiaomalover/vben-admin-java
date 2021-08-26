@@ -1,7 +1,6 @@
 package com.xm.admin.config.security;
 
 import cn.hutool.core.util.StrUtil;
-import com.xm.admin.common.constant.CommonConstant;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
@@ -31,7 +30,7 @@ public class SecurityUserDetails extends SysAdmin implements UserDetails {
             this.setUsername(user.getUsername());
             this.setPassword(user.getPassword());
             this.setStatus(user.getStatus());
-            this.setRoles(user.getRoles());
+            this.setRole(user.getRole());
             this.setPermissions(user.getPermissions());
         }
     }
@@ -49,7 +48,7 @@ public class SecurityUserDetails extends SysAdmin implements UserDetails {
         // 添加请求权限
         if (permissions != null && permissions.size() > 0) {
             for (SysPermission permission : permissions) {
-                if (CommonConstant.PERMISSION_OPERATION.equals(permission.getType())
+                if (SysPermission.TYPE_BTN.equals(permission.getType())
                         && StrUtil.isNotBlank(permission.getName())
                         && StrUtil.isNotBlank(permission.getPermisionCode())) {
 
@@ -58,14 +57,9 @@ public class SecurityUserDetails extends SysAdmin implements UserDetails {
             }
         }
         // 添加角色
-        List<SysRole> roles = this.getRoles();
-        if (roles != null && roles.size() > 0) {
-            // lambda表达式
-            roles.forEach(item -> {
-                if (StrUtil.isNotBlank(item.getName())) {
-                    authorityList.add(new SimpleGrantedAuthority(item.getName()));
-                }
-            });
+        SysRole role = this.getRole();
+        if (StrUtil.isNotBlank(role.getName())) {
+            authorityList.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorityList;
     }

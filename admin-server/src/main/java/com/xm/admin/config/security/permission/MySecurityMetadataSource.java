@@ -2,9 +2,8 @@ package com.xm.admin.config.security.permission;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xm.admin.common.constant.CommonConstant;
-//import com.xm.admin.module.sys.entity.Permission;
-//import com.xm.admin.module.sys.service.IPermissionService;
+import com.xm.admin.module.sys.entity.SysPermission;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.CommonStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ import java.util.*;
 @Component
 public class MySecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-    /*@Autowired
-    private IPermissionService permissionService;*/
+    @Autowired
+    private ISysPermissionService permissionService;
 
     private Map<String, Collection<ConfigAttribute>> map = null;
 
@@ -42,21 +41,21 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         Collection<ConfigAttribute> configAttributes;
         ConfigAttribute cfg;
         // 获取启用的权限操作请求
-        /*QueryWrapper<Permission> permissionQueryWrapper = new QueryWrapper<>();
-        permissionQueryWrapper.eq("type", CommonConstant.PERMISSION_OPERATION);
-        permissionQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED);
+        QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
+        permissionQueryWrapper.eq("type", SysPermission.TYPE_MENU);
+        permissionQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED.getStatus());
         permissionQueryWrapper.orderByAsc("sort_order");
-        List<Permission> permissions = permissionService.list(permissionQueryWrapper);
-        for (Permission permission : permissions) {
-            if (StrUtil.isNotBlank(permission.getTitle()) && StrUtil.isNotBlank(permission.getPath())) {
+        List<SysPermission> permissions = permissionService.list(permissionQueryWrapper);
+        for (SysPermission permission : permissions) {
+            if (StrUtil.isNotBlank(permission.getName()) && StrUtil.isNotBlank(permission.getUrl())) {
                 configAttributes = new ArrayList<>();
-                cfg = new SecurityConfig(permission.getTitle());
+                cfg = new SecurityConfig(permission.getName());
                 //作为MyAccessDecisionManager类的decide的第三个参数
                 configAttributes.add(cfg);
                 //用权限的path作为map的key，用ConfigAttribute的集合作为value
-                map.put(permission.getPath(), configAttributes);
+                map.put(permission.getUrl(), configAttributes);
             }
-        }*/
+        }
     }
 
     /**

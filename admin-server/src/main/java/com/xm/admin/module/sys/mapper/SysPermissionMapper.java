@@ -2,6 +2,7 @@ package com.xm.admin.module.sys.mapper;
 
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,4 +35,12 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @return 菜单树
      */
     List<Map<String, Object>> selectUserPermissionListMap(Integer userId);
+
+    /**
+     * 通过用户id获取
+     *
+     * @param userId 用户主键
+     * @return 权限列表
+     */
+    List<SysPermission> findByUserId(@Param("userId") Integer userId);
 }

@@ -21,6 +21,15 @@ public class SysPermission extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 
+    /** 类型 - 目录 */
+    public static final Integer TYPE_DIR = 0;
+
+    /** 类型 - 菜单 */
+    public static final Integer TYPE_MENU = 1;
+
+    /** 类型 - 按钮 */
+    public static final Integer TYPE_BTN = 2;
+
     /**
      * 类型：0目录;1菜单;按钮
      */

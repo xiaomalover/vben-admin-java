@@ -79,7 +79,10 @@ public class SysAdmin extends BaseEntity{
     private Integer departmentId;
 
     @TableField(exist = false)
-    private List<SysRole> roles;
+    private String departmentTitle;
+
+    @TableField(exist = false)
+    private SysRole role;
 
     @TableField(exist = false)
     private List<SysPermission> permissions;
