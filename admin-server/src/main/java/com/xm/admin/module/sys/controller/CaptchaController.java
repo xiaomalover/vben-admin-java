@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author xiaomalover <xiaomalover@gmail.com>
  */
-@RequestMapping("/skeleton/common/captcha")
+@RequestMapping("/captcha")
 @RestController
 @Transactional
 public class CaptchaController {

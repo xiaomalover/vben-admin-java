@@ -4,7 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xm.admin.module.sys.dto.MenuAddEditRequest;
+import com.xm.admin.config.exception.BaseException;
+import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.service.ISysAdminService;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/permission")
+@RequestMapping("/permission")
 public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
@@ -343,7 +344,7 @@ public class SysPermissionController {
             if (menuAddEditRequest.getParentMenu() > 0) {
                 SysPermission parent = permissionService.getById(menuAddEditRequest.getParentMenu());
                 if (ObjectUtil.isNull(parent)) {
-                    throw new Exception("父级菜单不存在");
+                    throw new BaseException(ResultCodeEnums.ERR, "父级菜单不存在");
                 }
                 path = parent.getPath();
             }
@@ -351,7 +352,7 @@ public class SysPermissionController {
             path = path + (path.length() > 0 ? "," : "") + permission.getId();
             permission.setPath(path);
             if (!permissionService.updateById(permission)) {
-                throw new Exception(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
 
             return new ResultUtil<>().success(true);
@@ -382,7 +383,7 @@ public class SysPermissionController {
             if (menuAddEditRequest.getParentMenu() > 0) {
                 SysPermission parent = permissionService.getById(menuAddEditRequest.getParentMenu());
                 if (ObjectUtil.isNull(parent)) {
-                    throw new Exception("父级菜单不存在");
+                    throw new BaseException(ResultCodeEnums.ERR, "父级不存在");
                 }
                 path = parent.getPath();
             }
@@ -390,7 +391,7 @@ public class SysPermissionController {
             path = path + (path.length() > 0 ? "," : "") + permission.getId();
             permission.setPath(path);
             if (!permissionService.updateById(permission)) {
-                throw new Exception(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
 
             return new ResultUtil<>().success(true);

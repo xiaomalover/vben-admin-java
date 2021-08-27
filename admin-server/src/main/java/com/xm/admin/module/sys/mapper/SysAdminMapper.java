@@ -29,4 +29,6 @@ public interface SysAdminMapper extends BaseMapper<SysAdmin> {
      * @return 管理页列表
      */
     IPage<SysAdmin> selectAdminList(IPage<SysAdmin> page, @Param("extraVo") ExtraVo extraVo, @Param("conditionMap") Map<String, Object> conditionMap);
+
+    SysAdmin loadUserByUsername(@Param("username") String username);
 }

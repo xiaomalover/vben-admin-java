@@ -29,7 +29,7 @@ public class ResultUtil<T> {
 
         result.setSuccess(true);
         result.setCode(ResultCodeEnums.SUCCESS.getCode());
-        result.setMessage(ResultCodeEnums.SUCCESS.getMsg());
+        result.setMessage(ResultCodeEnums.SUCCESS.getMessage());
         result.setResult(null);
 
         return result;
@@ -39,7 +39,7 @@ public class ResultUtil<T> {
 
         result.setSuccess(true);
         result.setCode(ResultCodeEnums.SUCCESS.getCode());
-        result.setMessage(ResultCodeEnums.SUCCESS.getMsg());
+        result.setMessage(ResultCodeEnums.SUCCESS.getMessage());
         result.setResult(t);
 
         return result;
@@ -69,7 +69,7 @@ public class ResultUtil<T> {
 
         result.setSuccess(false);
         result.setCode(ResultCodeEnums.ERR.getCode());
-        result.setMessage(ResultCodeEnums.ERR.getMsg());
+        result.setMessage(ResultCodeEnums.ERR.getMessage());
         result.setResult(null);
 
         return this.result;
@@ -80,7 +80,7 @@ public class ResultUtil<T> {
 
         result.setSuccess(false);
         result.setCode(resultCodeEnums.getCode());
-        result.setMessage(resultCodeEnums.getMsg());
+        result.setMessage(resultCodeEnums.getMessage());
         result.setResult(t);
 
         return this.result;
@@ -90,7 +90,7 @@ public class ResultUtil<T> {
 
         result.setSuccess(false);
         result.setCode(resultCodeEnums.getCode());
-        result.setMessage(resultCodeEnums.getMsg());
+        result.setMessage(resultCodeEnums.getMessage());
         result.setResult(null);
 
         return this.result;
@@ -116,12 +116,12 @@ public class ResultUtil<T> {
         return this.result;
     }
 
-    public Result<T> error(Integer code, String msg, T t) {
+    public Result<T> error(Integer code, String msg, T data) {
 
         this.result.setSuccess(false);
         this.result.setCode(code);
         this.result.setMessage(msg);
-        this.result.setResult(t);
+        this.result.setResult(data);
 
         return this.result;
     }

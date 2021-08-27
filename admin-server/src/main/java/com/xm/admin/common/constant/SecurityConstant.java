@@ -6,27 +6,12 @@ package com.xm.admin.common.constant;
 public interface SecurityConstant {
 
     /**
-     * token分割
+     * JWT 在 Redis 中保存的key前缀
      */
-    String TOKEN_SPLIT = "Bearer ";
+    String REDIS_JWT_KEY_PREFIX = "security:jwt:";
 
     /**
-     * JWT签名加密key
+     * 匿名用户 用户名
      */
-    String JWT_SIGN_KEY = "skeleton";
-
-    /**
-     * token参数头
-     */
-    String HEADER = "Authorization";
-
-    /**
-     * 权限参数头
-     */
-    String AUTHORITIES = "authorities";
-
-    /**
-     * 用户选择JWT保存时间参数头
-     */
-    String SAVE_LOGIN = "saveLogin";
+    String ANONYMOUS_NAME = "匿名用户";
 }

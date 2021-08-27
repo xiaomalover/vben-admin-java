@@ -20,7 +20,7 @@ import java.io.InputStream;
  */
 @Slf4j
 @RestController
-@RequestMapping("/skeleton/upload")
+@RequestMapping("/upload")
 public class UploadController {
 
     @Value("${upload.rootPath}")

@@ -341,35 +341,25 @@ CREATE TABLE `sys_admin_log` (
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '操作人',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='请求日志';
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='请求日志';
 
 /*Data for the table `sys_admin_log` */
 
 insert  into `sys_admin_log`(`id`,`cost_time`,`ip`,`ip_info`,`name`,`request_param`,`request_type`,`request_url`,`username`,`created_at`) values 
-(1,93,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"pszl\",\"captchaId\":\"f3b8204e89374b83a9f846bc2baaf47b\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628410528),
-(2,32,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"gpfu\",\"captchaId\":\"bf5983cd32e54e55be5d032c1818b2b1\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628411019),
-(3,442,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"c7z1\",\"captchaId\":\"558e4d9c807e44d8b50819f91f95c2e7\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628411521),
-(4,485,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"4grm\",\"captchaId\":\"0ca98c372bbc47dd8364cc8efaab1f3b\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628818829),
-(5,41,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"l8ph\",\"captchaId\":\"14cc5d852fdf49508b0b3744e54a1126\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628822448),
-(6,55,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"jnqt\",\"captchaId\":\"3bfab08f5c8740acadc2a68b9398d7b2\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628826077),
-(7,27,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"fnvo\",\"captchaId\":\"1c9850f43e0641de9498387ca95a28b7\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628832860),
-(8,37,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uqjq\",\"captchaId\":\"34fe7b40d603483ca81c6ca1a8bb9cc7\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628836529),
-(9,44,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"cjkz\",\"captchaId\":\"7f31f064e79b40fe9564ff4132c87f91\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628856515),
-(10,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"kilt\",\"captchaId\":\"3b9cdf7ce6f04dccbfbf92f1906f528e\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628860258),
-(11,39,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"fi6y\",\"captchaId\":\"2db8e4b1500640e5984045a3daaca240\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1628996765),
-(12,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"9dgy\",\"captchaId\":\"f6a6f297a21847d5be8b741dd06de69f\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629087977),
-(13,17,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"cthe\",\"captchaId\":\"ada8d2d6663646b5a3890f7045e43455\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629091952),
-(14,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"4xvu\",\"captchaId\":\"4dd7cd85b37f4114a50b74be46d5bd89\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629174752),
-(15,17,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"jdqr\",\"captchaId\":\"1858248feb7a4817bfbbb39a4b80b605\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629178541),
-(16,19,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"h3uj\",\"captchaId\":\"4e87506323704cb6a868e779782b31d6\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629182865),
-(17,55,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"M4NK\",\"captchaId\":\"f5d13d9847ef4cc6a5316ef4b3d1be68\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265244),
-(18,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"NQHA\",\"captchaId\":\"1971dcc5f32548ceba53e4e06cf8312c\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629265466),
-(19,52,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uxcd\",\"captchaId\":\"5319f09c310141ce9403be451f575547\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520908),
-(20,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"yzjo\",\"captchaId\":\"c77ffaf8fe8d40eb8ad02ec10c07aa7d\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629520937),
-(21,77,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"uzpt\",\"captchaId\":\"8d4a7d65a3ac4fdaa9ba038d793c46b9\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537456),
-(22,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"etsb\",\"captchaId\":\"f2d653271edb4561b24391d7ca478837\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537468),
-(23,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"sahu\",\"captchaId\":\"9f04dc9547c34603b583414ba1d894e8\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629537535),
-(24,56,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"1wex\",\"captchaId\":\"a84eeea087724820a77e25e074a79bbe\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629693023);
+(1,1,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"55am\",\"captchaId\":\"2ddc11d0c4b1483e948836a61c1f8871\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963304),
+(2,1,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"nw7x\",\"captchaId\":\"f22b0c68cdd84a61b95e4e68553318ae\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963334),
+(3,1,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"tw53\",\"captchaId\":\"6dc6f76cbd1f4624a4e9cebb32b95242\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963364),
+(4,2,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"akp4\",\"captchaId\":\"af21d6a5f8b6454e91587e6bc9d8b6d0\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963395),
+(5,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"ebrh\",\"captchaId\":\"996ad8601a414dd0a46e028a8615ee84\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963548),
+(6,2929,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"ducy\",\"captchaId\":\"1992a62d288f4091916233570af76d77\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629963780),
+(7,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"qnmf\",\"captchaId\":\"db19bc4ddab6407496458fecaac11d52\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629964764),
+(8,2,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"ek1j\",\"captchaId\":\"1dabbf9d53ed40ec945fe6ef45f79d81\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629964775),
+(9,43,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"spgx\",\"captchaId\":\"51c88b907cb441df9710a540f08cc273\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629965182),
+(10,6753,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"mijn\",\"captchaId\":\"908b2427f62a4abebddc9527a3b2b800\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629965289),
+(11,4,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"mijn\",\"captchaId\":\"908b2427f62a4abebddc9527a3b2b800\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629965308),
+(12,3,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"mijn\",\"captchaId\":\"908b2427f62a4abebddc9527a3b2b800\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629965311),
+(13,49,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"OTY8\",\"captchaId\":\"8d0a71c4a5c74510a73dd5549d9ac54b\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1629971262),
+(14,17,'192.168.56.1','','登录系统','{\"password\":\"******\",\"captcha\":\"f8nl\",\"captchaId\":\"9eb0edd43ace4488982e7d2c95f602b9\",\"username\":\"admin\"}','POST','/skeleton/login','admin',1630031387);
 
 /*Table structure for table `sys_admin_role` */
 
@@ -442,7 +432,7 @@ CREATE TABLE `sys_department` (
 
 insert  into `sys_department`(`id`,`parent_id`,`name`,`description`,`sort_order`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (1,'0','技术部','技术部',1.00,1,1628818864,'admin',1628818868,'admin'),
-(16,'0','财务部','财务部',1.00,1,1628996812,'admin',1628996812,'admin'),
+(16,'0','财务部','财务部',1.00,1,1628996812,'admin',1630031829,'admin'),
 (3,'1','研发一部','这是研发一部',1.00,1,1628818932,'admin',1628818932,'admin'),
 (4,'1','研发二部','研发二部',2.00,1,1628818951,'admin',1628818951,'admin'),
 (5,'4','二部一组','二部一组',1.00,1,1628818976,'admin',1628818976,'admin'),
@@ -463,6 +453,7 @@ CREATE TABLE `sys_permission` (
   `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名称',
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父类ID',
   `path` varchar(255) NOT NULL DEFAULT '' COMMENT '关系链',
+  `method` varchar(8) NOT NULL DEFAULT '' COMMENT '请求方法',
   `sort_order` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '排序',
   `icon` varchar(255) NOT NULL DEFAULT '' COMMENT '图标',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '路由地址',
@@ -477,17 +468,19 @@ CREATE TABLE `sys_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 /*Data for the table `sys_permission` */
 
-insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,0,'系统管理',0,'1',1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629958524,'admin'),
-(2,1,'账号管理',1,'1,2',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629958526,'admin'),
-(3,1,'角色管理',1,'1,3',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629958529,'admin'),
-(4,1,'菜单管理',1,'1,4',3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629958531,'admin'),
-(5,1,'部门管理',1,'1,5',3.00,'ant-design:appstore-filled','system/dept','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629958533,'admin'),
-(6,1,'首页',0,'6',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629958521,'admin');
+insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`method`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
+(1,0,'系统管理',0,'1','',1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629958524,'admin'),
+(2,1,'账号管理',1,'1,2','',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629958526,'admin'),
+(3,1,'角色管理',1,'1,3','',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629958529,'admin'),
+(4,1,'菜单管理',1,'1,4','',3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629958531,'admin'),
+(5,1,'部门管理',1,'1,5','',3.00,'ant-design:appstore-filled','/skeleton/department/*','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629962598,'admin'),
+(6,1,'首页',0,'6','',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629958521,'admin'),
+(9,2,'编辑部们',5,'1,5,9','',1.00,'','/skeleton/department/edit','','department:edit',1,1,0,0,1630031810,'admin',1630031822,'admin'),
+(10,2,'获取用户信息',0,'10','GET',0.00,'','/admin/userInfo','','',1,0,0,0,0,'',0,'');
 
 /*Table structure for table `sys_role` */
 
@@ -509,8 +502,8 @@ CREATE TABLE `sys_role` (
 /*Data for the table `sys_role` */
 
 insert  into `sys_role`(`id`,`name`,`code`,`description`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1629179250,'admin'),
-(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1629958443,'admin');
+(1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1629959441,'admin'),
+(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1630031936,'admin');
 
 /*Table structure for table `sys_role_permission` */
 
@@ -525,20 +518,24 @@ CREATE TABLE `sys_role_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
 
 /*Data for the table `sys_role_permission` */
 
 insert  into `sys_role_permission`(`id`,`permission_id`,`role_id`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (22,4,1,1629179173,'admin',1629179173,'admin'),
+(56,1,9,1629958565,'admin',1629958565,'admin'),
 (21,1,1,1629179173,'admin',1629179173,'admin'),
 (49,3,9,1629520966,'admin',1629520966,'admin'),
+(65,5,9,1629971274,'admin',1629971274,'admin'),
 (14,2,1,1629179015,'admin',1629179015,'admin'),
 (47,4,9,1629520962,'admin',1629520962,'admin'),
 (20,3,1,1629179158,'admin',1629179158,'admin'),
 (17,5,1,1629179015,'admin',1629179015,'admin'),
 (54,2,9,1629958420,'admin',1629958420,'admin'),
-(53,6,9,1629941625,'admin',1629941625,'admin');
+(59,6,9,1629960314,'admin',1629960314,'admin'),
+(66,9,9,1630031896,'admin',1630031896,'admin'),
+(67,10,9,1630031896,'admin',1630031896,'admin');
 
 /*Table structure for table `user_assets` */
 

@@ -3,7 +3,7 @@
     <select id="selectAllPermissionListMap" resultType="map">
         select id, url as routePath, `name` as menuName, component, parent_id as parentMenu, `type`, sort_order as orderNo,
         icon, permision_code as permission, status, is_external_link as isExt, is_cache as keepalive, is_display as `show`,
-        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime
+        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, p.method
         from sys_permission
         where status != 2
 
@@ -21,7 +21,7 @@
     <select id="selectUserPermissionListMap" resultType="map">
         select p.id, p.url as routePath, p.`name` as menuName, p.component, p.parent_id as parentMenu, p.`type`, p.sort_order as orderNo,
         p.icon, p.permision_code as permission, p.status, p.is_external_link as isExt, p.is_cache as keepalive, p.is_display as `show`,
-        FROM_UNIXTIME(p.created_at, "%Y-%m-%d") as createTime
+        FROM_UNIXTIME(p.created_at, "%Y-%m-%d") as createTime, p.method
         from sys_permission as p
         left join sys_role_permission as rp on rp.permission_id = p.id
         left join sys_admin as a on a.role_id = rp.role_id
@@ -35,7 +35,7 @@
     </select>
 
     <select id="findByUserId" resultType="com.xm.admin.module.sys.entity.SysPermission">
-      SELECT DISTINCT p.id, p.name, p.url, p.icon, p.type, p.component, p.parent_id, p.sort_order, p.status
+      SELECT DISTINCT p.id, p.name, p.url, p.icon, p.type, p.component, p.parent_id, p.sort_order, p.status, p.method
       FROM sys_admin u
       LEFT JOIN sys_role_permission rp ON u.role_id = rp.role_id
       LEFT JOIN sys_permission p ON p.id = rp.permission_id

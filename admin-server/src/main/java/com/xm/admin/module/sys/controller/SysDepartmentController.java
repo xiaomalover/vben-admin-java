@@ -1,6 +1,6 @@
 package com.xm.admin.module.sys.controller;
 
-import com.xm.admin.module.sys.dto.DepartmentAddEditRequest;
+import com.xm.admin.module.sys.payload.DepartmentAddEditRequest;
 import com.xm.admin.module.sys.entity.SysDepartment;
 import com.xm.admin.module.sys.service.ISysDepartmentService;
 import com.xm.common.utils.ResultUtil;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/department")
+@RequestMapping("/department")
 public class SysDepartmentController {
 
     final

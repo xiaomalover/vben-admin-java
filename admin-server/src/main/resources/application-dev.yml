@@ -1,7 +1,7 @@
 server:
   port: 20004
   servlet:
-    context-path: /
+    context-path: /skeleton
 
 # 配置文件加密key
 jasypt:
@@ -90,13 +90,21 @@ upload:
   domain: http://img.xm-bt.com/
 
 
-# 忽略鉴权url
-ignored:
-  urls:
-    - /skeleton/permission/getMenuList/**
-    - /skeleton/common/**
-    - /
-    - /*.*
-    - /static/**
-    - /resource/**
-    - /assets/**
+auth:
+  config:
+    ignores:
+      # 需要过滤的 post 请求
+      post:
+        - "/auth/login"
+        - "/auth/logout"
+      # 需要过滤的请求，不限方法
+      pattern:
+        - "/test/*"
+      get:
+        - "/captcha/getCaptcha"
+
+jwt:
+  config:
+    key: xmcoding
+    ttl: 600000
+    remember: 604800000

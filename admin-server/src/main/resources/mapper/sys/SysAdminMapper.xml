@@ -23,4 +23,8 @@
 
     </select>
 
+    <select id="loadUserByUsername" resultType="com.xm.admin.module.sys.entity.SysAdmin">
+        select * from sys_admin where username = #{username}
+    </select>
+
 </mapper>

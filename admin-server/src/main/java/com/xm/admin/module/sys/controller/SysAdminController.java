@@ -5,8 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xm.admin.module.sys.dto.AdminAddRequest;
-import com.xm.admin.module.sys.dto.AdminEditRequest;
+import com.xm.admin.module.sys.payload.AdminAddRequest;
+import com.xm.admin.module.sys.payload.AdminEditRequest;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.common.utils.CommonPageUtil;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/admin")
+@RequestMapping("/admin")
 public class SysAdminController {
 
     final

@@ -51,6 +51,11 @@ public class SysPermission extends BaseEntity{
     private String path;
 
     /**
+     * 请求方式
+     */
+    private String method;
+
+    /**
      * 排序
      */
     private BigDecimal sortOrder;

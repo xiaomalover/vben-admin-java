@@ -5,8 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xm.admin.config.exception.SkeletonException;
-import com.xm.admin.module.sys.dto.RoleAddEditRequest;
+import com.xm.admin.config.exception.BaseException;
+import com.xm.admin.module.sys.payload.RoleAddEditRequest;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.entity.SysRolePermission;
@@ -33,7 +33,7 @@ import java.util.*;
  * @since 2021-08-08
  */
 @RestController
-@RequestMapping("/skeleton/role")
+@RequestMapping("/role")
 public class SysRoleController {
 
     private final ISysRoleService roleService;
@@ -107,7 +107,7 @@ public class SysRoleController {
         sysRole.setStatus(roleAddEditRequest.getStatus());
         sysRole.setDescription(roleAddEditRequest.getRemark());
         if (!roleService.save(sysRole)) {
-            throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
         }
 
         //存入角色的菜单权限
@@ -119,7 +119,7 @@ public class SysRoleController {
                 rolePermission.setRoleId(sysRole.getId());
                 rolePermission.setPermissionId(x);
                 if (!rolePermissionService.save(rolePermission)) {
-                    throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                    throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
                 }
             });
         }
@@ -146,7 +146,7 @@ public class SysRoleController {
         sysRole.setStatus(roleAddEditRequest.getStatus());
 
         if (!roleService.updateById(sysRole)) {
-            throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
         }
 
         if (ObjectUtil.isNotNull(roleAddEditRequest.getMenu()) && !roleAddEditRequest.getMenu().isEmpty()) {
@@ -178,7 +178,7 @@ public class SysRoleController {
                     queryWrapperRemove.lambda().eq(SysRolePermission::getPermissionId, x);
                     queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
                     if (!rolePermissionService.remove(queryWrapperRemove)) {
-                        throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                        throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
                     }
                 }
             });
@@ -190,7 +190,7 @@ public class SysRoleController {
                 rolePermission.setRoleId(sysRole.getId());
                 rolePermission.setPermissionId(x);
                 if (!rolePermissionService.save(rolePermission)) {
-                    throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+                    throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
                 }
             });
 
@@ -208,7 +208,7 @@ public class SysRoleController {
     @Transactional(rollbackFor = Exception.class)
     public Result<Object> edit(@PathVariable String id) {
         if (!roleService.removeById(id)) {
-            throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
         }
 
         //删除所有的权限
@@ -218,7 +218,7 @@ public class SysRoleController {
         int hasPermission = rolePermissionService.count(queryWrapper);
 
         if (hasPermission > 0 && !rolePermissionService.remove(queryWrapper)) {
-            throw new SkeletonException(ResultCodeEnums.SAVE_DATA_ERROR.getMsg());
+            throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
         }
 
         return new ResultUtil<>().success(true);

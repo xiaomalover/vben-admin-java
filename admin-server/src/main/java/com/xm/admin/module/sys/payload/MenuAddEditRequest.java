@@ -1,4 +1,4 @@
-package com.xm.admin.module.sys.dto;
+package com.xm.admin.module.sys.payload;
 
 import lombok.Data;
 

@@ -1,61 +1,70 @@
 package com.xm.admin.common.utils;
 
-import com.google.gson.Gson;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.xm.admin.config.exception.BaseException;
+import com.xm.common.enums.ResultCodeEnums;
+import com.xm.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.ServletResponse;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * 后段响应工具类
+ * <p>
+ * Response 通用工具类
+ * </p>
  *
- * @author xiaomalover <xiaomalover@gmail.com>
  */
 @Slf4j
 public class ResponseUtil {
 
     /**
-     * 使用response输出JSON
+     * 往 response 写出 json
      *
-     * @param response  响应
-     * @param resultMap 结果
+     * @param response 响应
+     * @param resultCodeEnums   状态
+     * @param data     返回数据
      */
-    public static void out(ServletResponse response, Map<String, Object> resultMap) {
-
-        PrintWriter out = null;
+    public static void renderJson(HttpServletResponse response, ResultCodeEnums resultCodeEnums, Object data) {
         try {
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");
-            out = response.getWriter();
-            out.println(new Gson().toJson(resultMap));
-        } catch (Exception e) {
-            log.error(e + "输出JSON出错");
-        } finally {
-            if (out != null) {
-                out.flush();
-                out.close();
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "*");
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(200);
+
+            //  将JSON转为String的时候，忽略null值的时候转成的String存在错误
+
+            String result;
+            if (resultCodeEnums == ResultCodeEnums.SUCCESS) {
+                result = JSONUtil.toJsonStr(new JSONObject(new ResultUtil<>().success(data), false));
+            } else {
+                result = JSONUtil.toJsonStr(new JSONObject(new ResultUtil<>().error(resultCodeEnums), false));
             }
+
+            response.getWriter().write(result);
+        } catch (IOException e) {
+            log.error("Response写出JSON异常，", e);
         }
     }
 
-    public static Map<String, Object> resultMap(boolean flag, Integer code, String msg) {
-        return getBasicResultMap(flag, code, msg);
-    }
+    /**
+     * 往 response 写出 json
+     *
+     * @param response  响应
+     * @param exception 异常
+     */
+    public static void renderJson(HttpServletResponse response, BaseException exception) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "*");
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(200);
 
-    public static Map<String, Object> resultMap(boolean flag, Integer code, String msg, Object data) {
-        Map<String, Object> resultMap = getBasicResultMap(flag, code, msg);
-        resultMap.put("result", data);
-        return resultMap;
-    }
-
-    private static Map<String, Object> getBasicResultMap(boolean flag, Integer code, String msg) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("success", flag);
-        resultMap.put("message", msg);
-        resultMap.put("code", code);
-        resultMap.put("timestamp", System.currentTimeMillis());
-        return resultMap;
+            String result = JSONUtil.toJsonStr(new JSONObject(new ResultUtil<>().error(exception.getCode(), exception.getMessage(), exception.getData()), false));
+            response.getWriter().write(result);
+        } catch (IOException e) {
+            log.error("Response写出JSON异常，", e);
+        }
     }
 }
