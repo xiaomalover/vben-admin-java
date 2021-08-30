@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class MySecurityException extends BaseException {
+
     public MySecurityException(ResultCodeEnums resultCode) {
         super(resultCode);
     }

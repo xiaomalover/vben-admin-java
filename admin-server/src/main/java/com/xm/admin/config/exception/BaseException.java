@@ -3,6 +3,7 @@ package com.xm.admin.config.exception;
 import com.xm.common.enums.ResultCodeEnums;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  */
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BaseException extends RuntimeException {

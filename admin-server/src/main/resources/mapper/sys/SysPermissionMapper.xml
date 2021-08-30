@@ -3,7 +3,7 @@
     <select id="selectAllPermissionListMap" resultType="map">
         select id, url as routePath, `name` as menuName, component, parent_id as parentMenu, `type`, sort_order as orderNo,
         icon, permision_code as permission, status, is_external_link as isExt, is_cache as keepalive, is_display as `show`,
-        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, p.method
+        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, method
         from sys_permission
         where status != 2
 
@@ -25,7 +25,7 @@
         from sys_permission as p
         left join sys_role_permission as rp on rp.permission_id = p.id
         left join sys_admin as a on a.role_id = rp.role_id
-        where p.status != 2
+        where p.status != 2 and p.type != 2
 
         <if test="userId != null">
             AND a.id = #{userId}

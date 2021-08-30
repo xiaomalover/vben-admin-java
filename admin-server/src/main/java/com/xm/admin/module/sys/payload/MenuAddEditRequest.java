@@ -34,6 +34,8 @@ public class MenuAddEditRequest implements Serializable {
 
     private Integer show;
 
+    private String method;
+
     private String component;
 
     private Integer keepalive;

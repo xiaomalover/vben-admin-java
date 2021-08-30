@@ -1,5 +1,6 @@
 package com.xm.admin.module.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xm.admin.module.sys.entity.SysPermission;
@@ -53,10 +54,21 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             customMap.put("id", x.get("id"));
             customMap.put("parentMenu", x.get("parentMenu"));
             customMap.put("name", x.get("menuName"));
+            /*if (
+                    ObjectUtil.isNotNull(x.get("type"))
+                    && Convert.toInt(x.get("type")) != 2
+                    && ObjectUtil.isNotNull((x.get("routePath")))
+                    && StrUtil.isNotBlank(x.get("routePath").toString())
+            ) {
+                customMap.put("redirect", x.get("routePath"));
+            }*/
             Map<String, Object> customMeta = new HashMap<>();
             customMeta.put("title", x.get("menuName"));
             if (ObjectUtil.isNotNull(x.get("icon")) && StrUtil.isNotBlank(x.get("icon").toString())) {
                 customMeta.put("icon", x.get("icon"));
+            }
+            if (ObjectUtil.isNotNull(x.get("show")) && Convert.toInt(x.get("show")) == 0) {
+                customMeta.put("hideMenu", true);
             }
             customMap.put("meta", customMeta);
             customList.add(customMap);

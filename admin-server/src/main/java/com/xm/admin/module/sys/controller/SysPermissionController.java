@@ -1,27 +1,24 @@
 package com.xm.admin.module.sys.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xm.admin.common.utils.SecurityUtil;
+import com.xm.admin.config.auth.UserPrincipal;
 import com.xm.admin.config.exception.BaseException;
-import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
-import com.xm.admin.module.sys.service.ISysAdminService;
+import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -37,40 +34,15 @@ public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
 
-    private final ISysAdminService sysAdminService;
-
-    public SysPermissionController(ISysPermissionService permissionService, ISysAdminService sysAdminService) {
+    public SysPermissionController(ISysPermissionService permissionService) {
         this.permissionService = permissionService;
-        this.sysAdminService = sysAdminService;
     }
 
     @GetMapping("/getMenuList")
     public Result<Object> getAllMenuList() {
 
-        String username = "";
-        //获取当前用户ID
-        if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext())) {
-            if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext().getAuthentication())) {
-                if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
-                    UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    if (ObjectUtil.isNotNull(user)) {
-                        username = user.getUsername();
-                    }
-                }
-            }
-        }
-        if (StrUtil.isBlank(username)) {
-            return new ResultUtil<>().success("用户未登录");
-        }
-
-        //查找用户ID
-        QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        SysAdmin admin = sysAdminService.getOne(queryWrapper);
-        if (ObjectUtil.isNull(admin)) {
-            return new ResultUtil<>().success("无效用户");
-        }
-        List<Map<String, Object>> menuTree = permissionService.getMenuTree(admin.getId());
+        UserPrincipal user = SecurityUtil.getCurrentUser();
+        List<Map<String, Object>> menuTree = permissionService.getMenuTree(Objects.requireNonNull(user).getId());
         return new ResultUtil<>().success(menuTree);
     }
 
@@ -82,7 +54,7 @@ public class SysPermissionController {
                         "            \"path\": \"/dashboard\",\n" +
                         "            \"name\": \"Dashboard\",\n" +
                         "            \"component\": \"/dashboard/analysis/index\",\n" +
-                       // "            \"redirect\": \"/dashboard/analysis\",\n" +
+                        // "            \"redirect\": \"/dashboard/analysis\",\n" +
                         "            \"meta\": {\n" +
                         "                \"title\": \"routes.dashboard.dashboard\",\n" +
                         "                \"hideChildrenInMenu\": true,\n" +
@@ -337,11 +309,14 @@ public class SysPermissionController {
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
         permission.setComponent(menuAddEditRequest.getComponent());
+        if (SysPermission.TYPE_BTN.equals(menuAddEditRequest.getType())) {
+            permission.setMethod(menuAddEditRequest.getMethod());
+        }
 
         if (permissionService.save(permission)) {
 
             String path = "";
-            if (menuAddEditRequest.getParentMenu() > 0) {
+            if (ObjectUtil.isNotNull(menuAddEditRequest.getParentMenu()) && menuAddEditRequest.getParentMenu() > 0) {
                 SysPermission parent = permissionService.getById(menuAddEditRequest.getParentMenu());
                 if (ObjectUtil.isNull(parent)) {
                     throw new BaseException(ResultCodeEnums.ERR, "父级菜单不存在");
@@ -377,6 +352,9 @@ public class SysPermissionController {
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
         permission.setComponent(menuAddEditRequest.getComponent());
+        if (SysPermission.TYPE_BTN.equals(menuAddEditRequest.getType())) {
+            permission.setMethod(menuAddEditRequest.getMethod());
+        }
         if (permissionService.updateById(permission)) {
 
             String path = "";

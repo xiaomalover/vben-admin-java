@@ -316,7 +316,7 @@ CREATE TABLE `sys_admin` (
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 /*Data for the table `sys_admin` */
 
@@ -426,13 +426,13 @@ CREATE TABLE `sys_department` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sys_department` */
 
 insert  into `sys_department`(`id`,`parent_id`,`name`,`description`,`sort_order`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (1,'0','技术部','技术部',1.00,1,1628818864,'admin',1628818868,'admin'),
-(16,'0','财务部','财务部',1.00,1,1628996812,'admin',1630031829,'admin'),
+(16,'0','财务部','财务部',1.00,1,1628996812,'admin',1630295496,'admin'),
 (3,'1','研发一部','这是研发一部',1.00,1,1628818932,'admin',1628818932,'admin'),
 (4,'1','研发二部','研发二部',2.00,1,1628818951,'admin',1628818951,'admin'),
 (5,'4','二部一组','二部一组',1.00,1,1628818976,'admin',1628818976,'admin'),
@@ -468,19 +468,37 @@ CREATE TABLE `sys_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 /*Data for the table `sys_permission` */
 
 insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`method`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,0,'系统管理',0,'1','',1.00,'ant-design:setting-outlined','/system','','',1,0,0,0,1629079245,'admin',1629958524,'admin'),
-(2,1,'账号管理',1,'1,2','',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,0,0,1,1629088689,'admin',1629958526,'admin'),
-(3,1,'角色管理',1,'1,3','',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,0,0,1,1629088812,'admin',1629958529,'admin'),
-(4,1,'菜单管理',1,'1,4','',3.00,'ant-design:unordered-list-outlined','system/menu','/demo/system/menu/index','system:menu',1,0,0,1,1629088897,'admin',1629958531,'admin'),
-(5,1,'部门管理',1,'1,5','',3.00,'ant-design:appstore-filled','/skeleton/department/*','/demo/system/dept/index','system:dept',1,0,0,1,1629088944,'admin',1629962598,'admin'),
+(1,0,'系统管理',0,'1','',1.00,'ant-design:setting-outlined','/system','','',1,1,0,0,1629079245,'admin',1629958524,'admin'),
+(2,1,'账号管理',1,'1,2','',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,1,0,1,1629088689,'admin',1629958526,'admin'),
+(3,1,'角色管理',1,'1,3','',2.00,'ant-design:experiment-filled','system/role','/demo/system/role/index','system:role',1,1,0,1,1629088812,'admin',1629958529,'admin'),
+(4,1,'菜单管理',1,'1,4','',3.00,'ant-design:unordered-list-outlined','/system/menu','/demo/system/menu/index','system:menu',1,1,0,1,1629088897,'admin',1629958531,'admin'),
+(5,1,'部门管理',1,'1,5','',3.00,'ant-design:appstore-filled','/skeleton/department/*','/demo/system/dept/index','system:dept',1,1,0,1,1629088944,'admin',1630294865,'admin'),
 (6,1,'首页',0,'6','',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629958521,'admin'),
-(9,2,'编辑部们',5,'1,5,9','',1.00,'','/skeleton/department/edit','','department:edit',1,1,0,0,1630031810,'admin',1630031822,'admin'),
-(10,2,'获取用户信息',0,'10','GET',0.00,'','/admin/userInfo','','',1,0,0,0,0,'',0,'');
+(13,2,'编辑菜单',4,'1,4,13','POST',4.00,'','/permission/edit','','menu:btn:edit',1,0,0,0,1629521812,'admin',1630300030,'admin'),
+(10,2,'获取用户信息',0,'10','GET',0.00,'','/admin/userInfo','','',1,0,0,0,1629521812,'admin',1630300030,'admin'),
+(11,2,'获取用户菜单',4,'1,4,11','GET',2.00,'','/permission/getMenuList','','menu:btn:user',1,0,0,0,1629521812,'admin',1630300002,'admin'),
+(12,2,'获取全部菜单',4,'1,4,12','GET',1.00,'','/permission/getMenuTree','','menu:btn:all',1,0,0,0,1629521812,'admin',1630299986,'admin'),
+(14,2,'获取用户权限码',4,'1,4,14','GET',2.10,'','/permission/getPermCode','','menu:btn:code',1,1,0,0,1629521812,'admin',1630300153,'admin'),
+(15,2,'添加菜单',4,'1,4,15','POST',3.00,'','/permission/add','','menu:btn:add',1,1,0,0,1629521812,'admin',1630300014,'admin'),
+(16,2,'帐号列表',2,'1,2,16','GET',1.00,'','/admin/getAccountList','','admin:btn:list',1,0,0,0,1630293964,'admin',1630300249,'admin'),
+(17,2,'角色列表',3,'1,3,17','GET',1.00,'','/role/getRoleList','','role:btn:list',1,1,0,0,1630294081,'admin',1630300218,'admin'),
+(18,2,'编辑角色',3,'1,3,18','POST',3.00,'','/role/edit','','role:btn:edit',1,1,0,0,1630294225,'admin',1630299341,'admin'),
+(19,2,'部门列表',5,'1,5,19','GET',1.00,'','/department/getDepartmentTree','','dept:btn:list',1,1,0,0,1630295040,'admin',1630299928,'admin'),
+(20,2,'添加部门',5,'1,5,20','POST',2.00,'','/department/add','','dept:btn:add',1,1,0,0,1630295445,'admin',1630295445,'admin'),
+(21,2,'编辑部门',5,'1,5,21','POST',3.00,'','/department/edit','','dept:btn:edit',1,1,0,0,1630295482,'admin',1630295482,'admin'),
+(22,2,'添加帐号',2,'1,2,22','POST',3.00,'','/admin/add','','admin:btn:add',1,1,0,0,1630298703,'admin',1630298703,'admin'),
+(23,2,'编辑帐号',2,'1,2,23','POST',3.00,'','/admin/edit','','admin:btn:edit',1,1,0,0,1630298743,'admin',1630298743,'admin'),
+(24,2,'删除帐号',2,'1,2,24','DELETE',4.00,'','/admin/delete/*','','admin:btn:delete',1,1,0,0,1630298780,'admin',1630299095,'admin'),
+(25,2,'获取所有角色',3,'1,3,25','GET',1.10,'','/role/getAllRoleList','','role:btn:all',1,1,0,0,1630298909,'admin',1630299361,'admin'),
+(26,2,'添加角色',3,'1,3,26','POST',2.00,'','/role/add','','role:btn:add',1,1,0,0,1630299327,'admin',1630299327,'admin'),
+(27,2,'删除角色',3,'1,3,27','DELETE',5.00,'','/role/delete/*','','role:btn:delete',1,1,0,0,1630299397,'admin',1630299563,'admin'),
+(28,2,'删除部门',5,'1,5,28','DELETE',4.00,'','/department/delete/*','','dept:btn:delete',1,1,0,0,1630299886,'admin',1630299903,'admin'),
+(29,2,'删除菜单',4,'1,4,29','DELETE',5.00,'','/permission/delete/*','','menu:btn:delete',1,1,0,0,1630300134,'admin',1630300134,'admin');
 
 /*Table structure for table `sys_role` */
 
@@ -497,13 +515,13 @@ CREATE TABLE `sys_role` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='角色表';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 /*Data for the table `sys_role` */
 
 insert  into `sys_role`(`id`,`name`,`code`,`description`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1629959441,'admin'),
-(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1630031936,'admin');
+(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1630300604,'admin');
 
 /*Table structure for table `sys_role_permission` */
 
@@ -518,7 +536,7 @@ CREATE TABLE `sys_role_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
 
 /*Data for the table `sys_role_permission` */
 
@@ -535,7 +553,26 @@ insert  into `sys_role_permission`(`id`,`permission_id`,`role_id`,`created_at`,`
 (54,2,9,1629958420,'admin',1629958420,'admin'),
 (59,6,9,1629960314,'admin',1629960314,'admin'),
 (66,9,9,1630031896,'admin',1630031896,'admin'),
-(67,10,9,1630031896,'admin',1630031896,'admin');
+(67,10,9,1630031896,'admin',1630031896,'admin'),
+(68,11,9,1630031896,'admin',1630031896,'admin'),
+(69,12,9,1630031896,'admin',1630031896,'admin'),
+(70,13,9,1630031896,'admin',1630031896,'admin'),
+(71,14,9,1630031896,'admin',1630031896,'admin'),
+(72,15,9,1630031896,'admin',1630031896,'admin'),
+(73,17,9,0,'',0,''),
+(74,18,9,0,'',0,''),
+(75,16,9,1630294294,'admin',1630294294,'admin'),
+(94,28,9,1630300604,'admin',1630300604,'admin'),
+(93,21,9,1630300604,'admin',1630300604,'admin'),
+(92,20,9,1630300604,'admin',1630300604,'admin'),
+(79,25,9,1630298922,'admin',1630298922,'admin'),
+(80,22,9,1630298966,'admin',1630298966,'admin'),
+(81,23,9,1630298998,'admin',1630298998,'admin'),
+(82,24,9,1630299017,'admin',1630299017,'admin'),
+(83,26,9,1630299524,'admin',1630299524,'admin'),
+(90,29,9,1630300490,'admin',1630300490,'admin'),
+(91,19,9,1630300604,'admin',1630300604,'admin'),
+(88,27,9,1630299535,'admin',1630299535,'admin');
 
 /*Table structure for table `user_assets` */
 
