@@ -1,25 +1,30 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.security;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.mapper.SysPermissionMapper;
+import com.xm.common.enums.CommonStatus;
 import com.xm.common.enums.ResultCodeEnums;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +36,8 @@ import java.util.stream.Collectors;
 @Component
 public class RbacAuthorityService {
 
+    private Map<String, Collection<ConfigAttribute>> map = null;
+
     private final RequestMappingHandlerMapping mapping;
 
     private final SysPermissionMapper permissionMapper;
@@ -38,6 +45,31 @@ public class RbacAuthorityService {
     public RbacAuthorityService(RequestMappingHandlerMapping mapping, SysPermissionMapper permissionMapper) {
         this.mapping = mapping;
         this.permissionMapper = permissionMapper;
+    }
+
+    /**
+     * 加载权限表中所所有的按钮权限
+     */
+    public void loadResourceDefine() {
+        map = new HashMap<>(16);
+        Collection<ConfigAttribute> configAttributes;
+        ConfigAttribute cfg;
+        // 获取启用的权限操作请求
+        QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
+        permissionQueryWrapper.eq("type", SysPermission.TYPE_BTN);
+        permissionQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED.getStatus());
+        permissionQueryWrapper.orderByAsc("sort_order");
+        List<SysPermission> permissions = permissionMapper.selectList(permissionQueryWrapper);
+        for (SysPermission permission : permissions) {
+            if (StrUtil.isNotBlank(permission.getName()) && StrUtil.isNotBlank(permission.getUrl())) {
+                configAttributes = new ArrayList<>();
+                cfg = new SecurityConfig(permission.getName());
+                //作为MyAccessDecisionManager类的decide的第三个参数
+                configAttributes.add(cfg);
+                //用权限的path作为map的key，用ConfigAttribute的集合作为value
+                map.put(permission.getUrl(), configAttributes);
+            }
+        }
     }
 
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
@@ -62,9 +94,17 @@ public class RbacAuthorityService {
                 // 过滤 METHOD 为空
                 .filter(permission -> StrUtil.isNotBlank(permission.getMethod())).collect(Collectors.toList());
 
+            //判断请求url在不在权限列表中不在
+            if (ObjectUtil.isNull(map)) {
+                loadResourceDefine();
+            }
+            if (!needCheck(request.getRequestURI().replace(request.getContextPath(), ""))) {
+                return true;
+            }
+
             for (SysPermission btnPerm : btnPerms) {
-                AntPathRequestMatcher antPathMatcher = new AntPathRequestMatcher(btnPerm.getUrl(), btnPerm.getMethod());
-                if (antPathMatcher.matches(request)) {
+                AntPathRequestMatcher antPathMethodMatcher = new AntPathRequestMatcher(btnPerm.getUrl(), btnPerm.getMethod());
+                if (antPathMethodMatcher.matches(request)) {
                     hasPermission = true;
                     break;
                 }
@@ -74,6 +114,22 @@ public class RbacAuthorityService {
         } else {
             return false;
         }
+    }
+
+    public boolean needCheck(String  url) throws IllegalArgumentException {
+
+        if (map == null) {
+            loadResourceDefine();
+        }
+
+        //Object中包含用户请求request
+        PathMatcher pathMatcher = new AntPathMatcher();
+        for (String resURL : map.keySet()) {
+            if (StrUtil.isNotBlank(resURL) && pathMatcher.match(resURL, url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

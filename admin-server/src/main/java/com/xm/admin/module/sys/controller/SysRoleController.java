@@ -166,20 +166,14 @@ public class SysRoleController {
             List<Integer> sameList = new ArrayList<>(requestList);
             sameList.retainAll(existList);
 
-            //数据库有，请求的没有，要删除(有子权限的不能删除)
+            //数据库有，请求的没有，要删除
             existList.removeAll(sameList);
             existList.forEach(x -> {
-                QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
-                permissionQueryWrapper.lambda().ne(SysPermission::getId, x)
-                        .apply(x > 0, "FIND_IN_SET ('" + x + "', path)");
-                int childCount =  permissionService.count(permissionQueryWrapper);
-                if (childCount == 0) {
-                    QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
-                    queryWrapperRemove.lambda().eq(SysRolePermission::getPermissionId, x);
-                    queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
-                    if (!rolePermissionService.remove(queryWrapperRemove)) {
-                        throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
-                    }
+                QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
+                queryWrapperRemove.lambda().eq(SysRolePermission::getPermissionId, x);
+                queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
+                if (!rolePermissionService.remove(queryWrapperRemove)) {
+                    throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
                 }
             });
 

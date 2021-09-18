@@ -3,7 +3,7 @@ package com.xm.admin.module.sys.controller;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xm.admin.common.utils.JwtUtil;
-import com.xm.admin.config.auth.MySecurityException;
+import com.xm.admin.config.auth.security.MySecurityException;
 import com.xm.admin.module.sys.payload.LoginRequest;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;

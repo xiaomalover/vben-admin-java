@@ -2,7 +2,7 @@ package com.xm.admin.common.utils;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.xm.admin.common.constant.SecurityConstant;
-import com.xm.admin.config.auth.UserPrincipal;
+import com.xm.admin.config.auth.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,4 +1,4 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.security;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.xm.admin.module.sys.entity.SysAdmin;

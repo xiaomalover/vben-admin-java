@@ -1,5 +1,7 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.config;
 
+import com.xm.admin.config.auth.security.CustomUserDetailsService;
+import com.xm.admin.config.auth.jwt.JwtAuthenticationFilter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

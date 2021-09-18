@@ -1,4 +1,4 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.security;
 
 import com.xm.admin.config.exception.BaseException;
 import com.xm.common.enums.ResultCodeEnums;

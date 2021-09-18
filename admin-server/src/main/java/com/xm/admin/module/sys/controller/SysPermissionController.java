@@ -3,15 +3,16 @@ package com.xm.admin.module.sys.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xm.admin.common.utils.SecurityUtil;
-import com.xm.admin.config.auth.UserPrincipal;
+import com.xm.admin.config.auth.security.RbacAuthorityService;
+import com.xm.admin.config.auth.security.UserPrincipal;
 import com.xm.admin.config.exception.BaseException;
-import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,11 @@ public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
 
-    public SysPermissionController(ISysPermissionService permissionService) {
+    private final RbacAuthorityService rbacAuthorityService;
+
+    public SysPermissionController(ISysPermissionService permissionService, RbacAuthorityService rbacAuthorityService) {
         this.permissionService = permissionService;
+        this.rbacAuthorityService = rbacAuthorityService;
     }
 
     @GetMapping("/getMenuList")
@@ -330,6 +334,9 @@ public class SysPermissionController {
                 throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
 
+            //更新需要检验的权限map
+            rbacAuthorityService.loadResourceDefine();
+
             return new ResultUtil<>().success(true);
         }
 
@@ -372,6 +379,9 @@ public class SysPermissionController {
                 throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
 
+            //更新需要检验的权限map
+            rbacAuthorityService.loadResourceDefine();
+
             return new ResultUtil<>().success(true);
         }
 
@@ -383,6 +393,9 @@ public class SysPermissionController {
         if (permissionService.removeById(id)) {
             return new ResultUtil<>().success(true);
         }
+
+        //更新需要检验的权限map
+        rbacAuthorityService.loadResourceDefine();
 
         return new ResultUtil<>().error();
     }

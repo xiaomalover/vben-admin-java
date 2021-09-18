@@ -1,4 +1,4 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.jwt;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -6,6 +6,9 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.xm.admin.common.utils.JwtUtil;
 import com.xm.admin.common.utils.ResponseUtil;
+import com.xm.admin.config.auth.config.AuthConfig;
+import com.xm.admin.config.auth.security.CustomUserDetailsService;
+import com.xm.admin.config.auth.security.MySecurityException;
 import com.xm.common.enums.ResultCodeEnums;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;

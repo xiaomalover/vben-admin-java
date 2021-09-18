@@ -1,4 +1,4 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.config;
 
 import com.google.common.collect.Lists;
 import lombok.Data;

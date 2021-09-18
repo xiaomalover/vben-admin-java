@@ -69,6 +69,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
             if (ObjectUtil.isNotNull(x.get("show")) && Convert.toInt(x.get("show")) == 0) {
                 customMeta.put("hideMenu", true);
+                customMeta.put("showMenu", false);
             }
             customMap.put("meta", customMeta);
             customList.add(customMap);

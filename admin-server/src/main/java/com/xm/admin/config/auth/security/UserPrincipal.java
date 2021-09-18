@@ -1,4 +1,4 @@
-package com.xm.admin.config.auth;
+package com.xm.admin.config.auth.security;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
