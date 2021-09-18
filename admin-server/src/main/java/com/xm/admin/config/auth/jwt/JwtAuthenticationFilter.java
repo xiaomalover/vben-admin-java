@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.xm.admin.common.utils.JwtUtil;
 import com.xm.admin.common.utils.ResponseUtil;
-import com.xm.admin.config.auth.config.AuthConfig;
+import com.xm.admin.config.auth.security.AuthConfig;
 import com.xm.admin.config.auth.security.CustomUserDetailsService;
 import com.xm.admin.config.auth.security.MySecurityException;
 import com.xm.common.enums.ResultCodeEnums;

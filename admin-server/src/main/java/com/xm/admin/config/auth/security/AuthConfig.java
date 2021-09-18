@@ -1,5 +1,6 @@
-package com.xm.admin.config.auth.config;
+package com.xm.admin.config.auth.security;
 
+import com.xm.admin.config.auth.security.IgnoreConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
