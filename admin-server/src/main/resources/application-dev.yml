@@ -79,7 +79,6 @@ auth:
       # 需要过滤的 post 请求
       post:
         - "/auth/login"
-        - "/auth/logout"
       # 需要过滤的请求，不限方法
       pattern:
         - "/test/*"

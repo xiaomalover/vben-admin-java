@@ -1,10 +1,15 @@
 package com.xm.admin.module.sys.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.common.utils.JwtUtil;
 import com.xm.admin.config.auth.security.MySecurityException;
+import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.payload.LoginRequest;
+import com.xm.admin.module.sys.payload.UnlockRequest;
+import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
@@ -14,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +41,25 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, StringRedisTemplate redisTemplate) {
+    private final ISysAdminService sysAdminService;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, StringRedisTemplate redisTemplate, ISysAdminService sysAdminService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.redisTemplate = redisTemplate;
+        this.sysAdminService = sysAdminService;
+    }
+
+    /**
+     * 解锁屏幕
+     */
+    @PostMapping("/unlock")
+    public Result<Object> unlock(@Valid @ModelAttribute UnlockRequest unlockRequest) {
+        QueryWrapper<SysAdmin> adminQueryWrapper = new QueryWrapper<>();
+        adminQueryWrapper.eq("username", unlockRequest.getUsername());
+        SysAdmin admin = sysAdminService.getOne(adminQueryWrapper);
+        boolean result = ObjectUtil.isNotNull(admin) && new BCryptPasswordEncoder().matches(unlockRequest.getPassword(), admin.getPassword());
+        return new ResultUtil<>().success(result);
     }
 
     /**
