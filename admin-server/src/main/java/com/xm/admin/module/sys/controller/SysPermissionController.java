@@ -2,11 +2,13 @@ package com.xm.admin.module.sys.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.common.utils.SecurityUtil;
 import com.xm.admin.config.auth.security.RbacAuthorityService;
 import com.xm.admin.config.auth.security.UserPrincipal;
 import com.xm.admin.config.exception.BaseException;
 import com.xm.admin.module.sys.entity.SysPermission;
+import com.xm.admin.module.sys.entity.SysRolePermission;
 import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
@@ -293,8 +295,8 @@ public class SysPermissionController {
 
     @GetMapping("/getPermCode")
     public Result<Object> getPermCode() {
-        Object result = JSONObject.parse("[\"1000\", \"3000\", \"5000\"]");
-        return new ResultUtil<>().success(result);
+        List<String> permissionCodes = Objects.requireNonNull(SecurityUtil.getCurrentUser()).getPermissionCodes();
+        return new ResultUtil<>().success(permissionCodes);
     }
 
     @PostMapping("/add")

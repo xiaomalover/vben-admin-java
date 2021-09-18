@@ -83,15 +83,20 @@ public class UserPrincipal implements UserDetails {
     private String roleName;
 
     /**
+     * 所有以按钮权限
+     */
+    private List<String> permissionCodes;
+
+    /**
      * 用户权限列表
      */
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(SysAdmin user, String roleName, List<SysPermission> permissions) {
+    public static UserPrincipal create(SysAdmin user, String roleName, List<SysPermission> permissions, List<String> permissionCodes) {
 
         List<GrantedAuthority> authorities = permissions.stream().filter(permission -> StrUtil.isNotBlank(permission.getPermisionCode())).map(permission -> new SimpleGrantedAuthority(permission.getPermisionCode())).collect(Collectors.toList());
 
-        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getMobile(), user.getEmail(), user.getSex(), user.getStatus(), user.getCreatedAt(), user.getUpdatedAt(), roleName, authorities);
+        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getMobile(), user.getEmail(), user.getSex(), user.getStatus(), user.getCreatedAt(), user.getUpdatedAt(), roleName, permissionCodes, authorities);
     }
 
     @Override

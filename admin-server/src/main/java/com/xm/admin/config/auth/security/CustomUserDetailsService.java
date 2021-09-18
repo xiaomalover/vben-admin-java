@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -53,6 +54,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             permissions = permissionMapper.findByUserId(user.getId());
         }
 
-        return UserPrincipal.create(user, roleName, permissions);
+        List<String> permissionCodes = permissions.stream().filter(x -> SysPermission.TYPE_BTN.equals(x.getType())).map(SysPermission::getPermisionCode).collect(Collectors.toList());
+
+        return UserPrincipal.create(user, roleName, permissions, permissionCodes);
     }
 }

@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xm.admin.common.annotation.SystemLog;
 import com.xm.admin.module.sys.payload.AdminAddRequest;
 import com.xm.admin.module.sys.payload.AdminEditRequest;
 import com.xm.admin.module.sys.entity.SysAdmin;
@@ -122,6 +123,7 @@ public class SysAdminController {
     }
 
     @PostMapping("/edit")
+    @SystemLog(description = "修改管理用户")
     public Result<Object> edit(@Valid AdminEditRequest adminEditRequest) {
         SysAdmin sysAdmin = adminService.getById(adminEditRequest.getId());
 

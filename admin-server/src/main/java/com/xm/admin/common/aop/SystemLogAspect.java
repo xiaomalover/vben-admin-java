@@ -1,9 +1,9 @@
 package com.xm.admin.common.aop;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xm.admin.common.annotation.SystemLog;
 import com.xm.admin.common.utils.IpInfoUtil;
+import com.xm.admin.common.utils.SecurityUtil;
 import com.xm.admin.common.utils.ThreadPoolUtil;
 import com.xm.admin.module.sys.entity.SysAdminLog;
 import com.xm.admin.module.sys.service.ISysAdminLogService;
@@ -14,8 +14,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.NamedThreadLocal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -82,44 +80,36 @@ public class SystemLogAspect {
         try {
 
             String username = "admin";
-            if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext())) {
-                if (!ObjectUtils.isEmpty(SecurityContextHolder.getContext().getAuthentication())) {
-                    if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
-                        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                        if (ObjectUtil.isNotNull(user)) {
-                            username = user.getUsername();
-                        }
-                    }
-                }
+
+            String currentUsername = SecurityUtil.getCurrentUsername();
+            if (StrUtil.isNotBlank(currentUsername)) {
+                username = currentUsername;
             }
 
-            if (StrUtil.isNotBlank(username)) {
+            SysAdminLog log = new SysAdminLog();
 
-                SysAdminLog log = new SysAdminLog();
+            //日志标题
+            log.setName(getControllerMethodDescription(joinPoint));
+            //日志请求url
+            log.setRequestUrl(request.getRequestURI());
+            //请求方式
+            log.setRequestType(request.getMethod());
+            //请求参数
+            Map<String, String[]> logParams = request.getParameterMap();
+            log.setMapToParams(logParams);
+            //请求用户
+            log.setUsername(username);
+            //请求IP
+            log.setIp(ipInfoUtil.getIpAddr(request));
+            //请求开始时间
+            long beginTime = beginTimeThreadLocal.get().getTime();
+            long endTime = System.currentTimeMillis();
+            //请求耗时
+            long logElapsedTime = endTime - beginTime;
+            log.setCostTime((int) logElapsedTime);
 
-                //日志标题
-                log.setName(getControllerMethodDescription(joinPoint));
-                //日志请求url
-                log.setRequestUrl(request.getRequestURI());
-                //请求方式
-                log.setRequestType(request.getMethod());
-                //请求参数
-                Map<String, String[]> logParams = request.getParameterMap();
-                log.setMapToParams(logParams);
-                //请求用户
-                log.setUsername(username);
-                //请求IP
-                log.setIp(ipInfoUtil.getIpAddr(request));
-                //请求开始时间
-                long beginTime = beginTimeThreadLocal.get().getTime();
-                long endTime = System.currentTimeMillis();
-                //请求耗时
-                long logElapsedTime = endTime - beginTime;
-                log.setCostTime((int) logElapsedTime);
-
-                //调用线程保存至数据库
-                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(log, logService));
-            }
+            //调用线程保存至数据库
+            ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(log, logService));
         } catch (Exception e) {
             log.error("AOP后置通知异常", e);
         }

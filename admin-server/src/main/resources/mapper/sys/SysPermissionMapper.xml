@@ -35,7 +35,7 @@
     </select>
 
     <select id="findByUserId" resultType="com.xm.admin.module.sys.entity.SysPermission">
-      SELECT DISTINCT p.id, p.name, p.url, p.icon, p.type, p.component, p.parent_id, p.sort_order, p.status, p.method
+      SELECT DISTINCT p.id, p.name, p.url, p.icon, p.type, p.component, p.parent_id, p.sort_order, p.status, p.method, p.permision_code
       FROM sys_admin u
       LEFT JOIN sys_role_permission rp ON u.role_id = rp.role_id
       LEFT JOIN sys_permission p ON p.id = rp.permission_id
