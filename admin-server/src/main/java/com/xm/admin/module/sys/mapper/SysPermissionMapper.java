@@ -42,5 +42,5 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @param userId 用户主键
      * @return 权限列表
      */
-    List<SysPermission> findByUserId(@Param("userId") Integer userId);
+    List<SysPermission> findPermissionCodeByUserId(@Param("userId") Integer userId);
 }

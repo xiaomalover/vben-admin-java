@@ -2,19 +2,17 @@ package com.xm.admin.module.sys.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.common.utils.SecurityUtil;
 import com.xm.admin.config.auth.security.RbacAuthorityService;
 import com.xm.admin.config.auth.security.UserPrincipal;
 import com.xm.admin.config.exception.BaseException;
 import com.xm.admin.module.sys.entity.SysPermission;
-import com.xm.admin.module.sys.entity.SysRolePermission;
 import com.xm.admin.module.sys.payload.MenuAddEditRequest;
 import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,16 +37,19 @@ public class SysPermissionController {
 
     private final RbacAuthorityService rbacAuthorityService;
 
-    public SysPermissionController(ISysPermissionService permissionService, RbacAuthorityService rbacAuthorityService) {
+    private final StringRedisTemplate redisTemplate;
+
+    public SysPermissionController(ISysPermissionService permissionService, RbacAuthorityService rbacAuthorityService, StringRedisTemplate redisTemplate) {
         this.permissionService = permissionService;
         this.rbacAuthorityService = rbacAuthorityService;
+        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping("/getMenuList")
     public Result<Object> getAllMenuList() {
 
         UserPrincipal user = SecurityUtil.getCurrentUser();
-        List<Map<String, Object>> menuTree = permissionService.getMenuTree(Objects.requireNonNull(user).getId());
+        List<Map<String, Object>> menuTree = permissionService.getUserPermission(Objects.requireNonNull(user).getId());
         return new ResultUtil<>().success(menuTree);
     }
 
@@ -290,7 +291,7 @@ public class SysPermissionController {
             @RequestParam(required = false) String menuName,
             @RequestParam(required = false) Integer status
     ) {
-        return new ResultUtil<>().success(permissionService.getPermissionTree(menuName, status));
+        return new ResultUtil<>().success(permissionService.getAllPermission(menuName, status));
     }
 
     @GetMapping("/getPermCode")
@@ -335,6 +336,9 @@ public class SysPermissionController {
             if (!permissionService.updateById(permission)) {
                 throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
+
+            //手动删除缓存
+            redisTemplate.delete("permission::allPermissionCodes");
 
             //更新需要检验的权限map
             rbacAuthorityService.loadResourceDefine();
@@ -381,6 +385,9 @@ public class SysPermissionController {
                 throw new BaseException(ResultCodeEnums.SAVE_DATA_ERROR);
             }
 
+            //手动删除缓存
+            redisTemplate.delete("permission::allPermissionCodes");
+
             //更新需要检验的权限map
             rbacAuthorityService.loadResourceDefine();
 
@@ -395,6 +402,9 @@ public class SysPermissionController {
         if (permissionService.removeById(id)) {
             return new ResultUtil<>().success(true);
         }
+
+        //手动删除缓存
+        redisTemplate.delete("permission::allPermissionCodes");
 
         //更新需要检验的权限map
         rbacAuthorityService.loadResourceDefine();

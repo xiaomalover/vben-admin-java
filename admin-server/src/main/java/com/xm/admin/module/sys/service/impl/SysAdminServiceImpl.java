@@ -9,11 +9,11 @@ import com.xm.admin.module.sys.entity.SysDepartment;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.mapper.SysAdminMapper;
-import com.xm.admin.module.sys.mapper.SysPermissionMapper;
 import com.xm.admin.module.sys.mapper.SysRoleMapper;
 import com.xm.admin.module.sys.service.ISysAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xm.admin.module.sys.service.ISysDepartmentService;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.CommonStatus;
 import com.xm.common.vo.ExtraVo;
 import org.springframework.stereotype.Service;
@@ -38,13 +38,13 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     private final SysRoleMapper roleMapper;
 
-    private final SysPermissionMapper permissionMapper;
+    private final ISysPermissionService permissionService;
 
-    public SysAdminServiceImpl(SysAdminMapper adminMapper, ISysDepartmentService departmentService, SysRoleMapper roleMapper, SysPermissionMapper permissionMapper) {
+    public SysAdminServiceImpl(SysAdminMapper adminMapper, ISysDepartmentService departmentService, SysRoleMapper roleMapper, ISysPermissionService permissionService) {
         this.adminMapper = adminMapper;
         this.departmentService = departmentService;
         this.roleMapper = roleMapper;
-        this.permissionMapper = permissionMapper;
+        this.permissionService = permissionService;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
             }
 
             // 关联权限菜单
-            List<SysPermission> permissionList = permissionMapper.findByUserId(admin.getId());
+            List<SysPermission> permissionList = permissionService.getUserPermissionCodes(admin.getId());
             admin.setPermissions(permissionList);
             return admin;
         }

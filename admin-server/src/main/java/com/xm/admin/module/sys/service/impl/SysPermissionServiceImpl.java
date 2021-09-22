@@ -3,10 +3,14 @@ package com.xm.admin.module.sys.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.mapper.SysPermissionMapper;
 import com.xm.admin.module.sys.service.ISysPermissionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xm.common.enums.CommonStatus;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ import java.util.Map;
  * @since 2021-08-08
  */
 @Service
+@CacheConfig(cacheNames = "permission")
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements ISysPermissionService {
 
     private final SysPermissionMapper permissionMapper;
@@ -32,13 +37,14 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<Map<String, Object>> getPermissionTree(String menuName, Integer status) {
+    public List<Map<String, Object>> getAllPermission(String menuName, Integer status) {
         List<Map<String, Object>> menuList = permissionMapper.selectAllPermissionListMap(menuName, status);
         return formatTree(menuList);
     }
 
     @Override
-    public List<Map<String, Object>> getMenuTree(Integer userId) {
+    @Cacheable(key = "'adminMenuList:'+#userId")
+    public List<Map<String, Object>> getUserPermission(Integer userId) {
 
         List<Map<String, Object>> menuList = permissionMapper.selectUserPermissionListMap(userId);
 
@@ -76,6 +82,22 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         });
 
         return formatTree(customList);
+    }
+
+    @Override
+    @Cacheable(key = "'allPermissionCodes'")
+    public List<SysPermission> getAllPermissionCodes() {
+        QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
+        permissionQueryWrapper.eq("type", SysPermission.TYPE_BTN);
+        permissionQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED.getStatus());
+        permissionQueryWrapper.orderByAsc("sort_order");
+        return permissionMapper.selectList(permissionQueryWrapper);
+    }
+
+    @Override
+    @Cacheable(key = "'userPermissionCodes:'+#userId")
+    public List<SysPermission> getUserPermissionCodes(Integer userId) {
+        return permissionMapper.findPermissionCodeByUserId(userId);
     }
 
     private List<Map<String, Object>> formatTree(List<Map<String, Object>> treeList)

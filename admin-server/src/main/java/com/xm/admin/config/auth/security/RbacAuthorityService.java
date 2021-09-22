@@ -2,18 +2,15 @@ package com.xm.admin.config.auth.security;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.xm.admin.module.sys.entity.SysPermission;
-import com.xm.admin.module.sys.mapper.SysPermissionMapper;
-import com.xm.common.enums.CommonStatus;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -40,11 +37,11 @@ public class RbacAuthorityService {
 
     private final RequestMappingHandlerMapping mapping;
 
-    private final SysPermissionMapper permissionMapper;
+    private final ISysPermissionService sysPermissionService;
 
-    public RbacAuthorityService(RequestMappingHandlerMapping mapping, SysPermissionMapper permissionMapper) {
+    public RbacAuthorityService(RequestMappingHandlerMapping mapping, ISysPermissionService sysPermissionService) {
         this.mapping = mapping;
-        this.permissionMapper = permissionMapper;
+        this.sysPermissionService = sysPermissionService;
     }
 
     /**
@@ -55,11 +52,7 @@ public class RbacAuthorityService {
         Collection<ConfigAttribute> configAttributes;
         ConfigAttribute cfg;
         // 获取启用的权限操作请求
-        QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
-        permissionQueryWrapper.eq("type", SysPermission.TYPE_BTN);
-        permissionQueryWrapper.eq("status", CommonStatus.STATUS_ENABLED.getStatus());
-        permissionQueryWrapper.orderByAsc("sort_order");
-        List<SysPermission> permissions = permissionMapper.selectList(permissionQueryWrapper);
+        List<SysPermission> permissions = sysPermissionService.getAllPermissionCodes();
         for (SysPermission permission : permissions) {
             if (StrUtil.isNotBlank(permission.getName()) && StrUtil.isNotBlank(permission.getUrl())) {
                 configAttributes = new ArrayList<>();
@@ -83,12 +76,10 @@ public class RbacAuthorityService {
             Integer userId = principal.getId();
 
             // 获取启用的权限操作请求
-            List<SysPermission> permissions = permissionMapper.findByUserId(userId);
+            List<SysPermission> permissions = sysPermissionService.getUserPermissionCodes(userId);
 
             //获取资源，前后端分离，所以过滤页面权限，只保留按钮权限
             List<SysPermission> btnPerms = permissions.stream()
-                // 过滤页面权限
-                .filter(permission -> Objects.equals(permission.getType(), SysPermission.TYPE_BTN))
                 // 过滤 URL 为空
                 .filter(permission -> StrUtil.isNotBlank(permission.getUrl()))
                 // 过滤 METHOD 为空

@@ -23,11 +23,23 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @param status   状态
      * @return 菜单（权限）树
      */
-    List<Map<String, Object>> getPermissionTree(String menuName, Integer status);
+    List<Map<String, Object>> getAllPermission(String menuName, Integer status);
 
     /**
      * 获取菜单树
      * @return 菜单树
      */
-    List<Map<String, Object>> getMenuTree(Integer userId);
+    List<Map<String, Object>> getUserPermission(Integer userId);
+
+    /**
+     * 获取所有权限码, 操作类型的菜单
+     * @return 权限码
+     */
+    List<SysPermission> getAllPermissionCodes();
+
+    /**
+     * 获取用户权限码
+     * @return 权限码
+     */
+    List<SysPermission> getUserPermissionCodes(Integer userId);
 }

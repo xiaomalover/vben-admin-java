@@ -5,7 +5,7 @@ import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.mapper.SysAdminMapper;
-import com.xm.admin.module.sys.mapper.SysPermissionMapper;
+import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.admin.module.sys.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,13 +30,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final ISysRoleService roleService;
 
-    private final SysPermissionMapper permissionMapper;
+    private final ISysPermissionService permissionService;
 
     @Autowired
-    public CustomUserDetailsService(SysAdminMapper adminMapper, ISysRoleService roleService, SysPermissionMapper permissionMapper) {
+    public CustomUserDetailsService(SysAdminMapper adminMapper, ISysRoleService roleService, ISysPermissionService permissionService) {
         this.adminMapper = adminMapper;
         this.roleService = roleService;
-        this.permissionMapper = permissionMapper;
+        this.permissionService = permissionService;
     }
 
     @Override
@@ -51,10 +51,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         SysRole role = roleService.getById(user.getRoleId());
         if (ObjectUtil.isNotNull(role)) {
             roleName = role.getName();
-            permissions = permissionMapper.findByUserId(user.getId());
+            permissions = permissionService.getUserPermissionCodes(user.getId());
         }
 
-        List<String> permissionCodes = permissions.stream().filter(x -> SysPermission.TYPE_BTN.equals(x.getType())).map(SysPermission::getPermisionCode).collect(Collectors.toList());
+        List<String> permissionCodes = permissions.stream().map(SysPermission::getPermisionCode).collect(Collectors.toList());
 
         return UserPrincipal.create(user, roleName, permissions, permissionCodes);
     }

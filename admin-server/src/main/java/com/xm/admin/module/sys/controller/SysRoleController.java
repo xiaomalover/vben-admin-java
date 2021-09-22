@@ -18,7 +18,9 @@ import com.xm.common.utils.CommonPageUtil;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.ExtraVo;
 import com.xm.common.vo.Result;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,10 +44,13 @@ public class SysRoleController {
 
     private final ISysPermissionService permissionService;
 
-    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService, ISysPermissionService permissionService) {
+    private final StringRedisTemplate redisTemplate;
+
+    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService, ISysPermissionService permissionService, StringRedisTemplate redisTemplate) {
         this.roleService = roleService;
         this.rolePermissionService = rolePermissionService;
         this.permissionService = permissionService;
+        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping("/getRoleList")
@@ -193,6 +198,18 @@ public class SysRoleController {
             QueryWrapper<SysRolePermission> queryWrapperRemove = new QueryWrapper<>();
             queryWrapperRemove.lambda().eq(SysRolePermission::getRoleId, sysRole.getId());
             rolePermissionService.remove(queryWrapperRemove);
+        }
+
+        //删除操作类权限码缓存
+        Set<String> keysUserPerm = redisTemplate.keys("permission::userPermissionCodes:*");
+        if (!ObjectUtils.isEmpty(keysUserPerm)) {
+            redisTemplate.delete(keysUserPerm);
+        }
+
+        //删除所有菜单权限缓存
+        Set<String> keysUserMenu = redisTemplate.keys("permission::adminMenuList:*");
+        if (!ObjectUtils.isEmpty(keysUserMenu)) {
+            redisTemplate.delete(keysUserMenu);
         }
 
         return new ResultUtil<>().success(true);
