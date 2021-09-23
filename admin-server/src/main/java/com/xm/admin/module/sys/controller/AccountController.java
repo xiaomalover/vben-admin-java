@@ -41,7 +41,7 @@ public class AccountController {
             StorageFactory factoryForStrategy,
             @Value("${storage.type}") String storageType,
             ISysAdminService adminService
-    ) throws Exception {
+    ) {
         this.storage = factoryForStrategy.getStorage(storageType + "Impl");
         this.adminService = adminService;
     }
