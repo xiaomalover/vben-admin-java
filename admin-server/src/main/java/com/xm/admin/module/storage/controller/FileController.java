@@ -17,7 +17,7 @@ public class FileController {
 
     final private IStorage storage;
 
-    public FileController(StorageFactory factoryForStrategy, @Value("${storage.type}") String storageType) throws Exception {
+    public FileController(StorageFactory factoryForStrategy, @Value("${storage.type}") String storageType) {
         this.storage = factoryForStrategy.getStorage(storageType + "Impl");
     }
 
