@@ -6,6 +6,7 @@ import com.xm.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -51,6 +52,12 @@ public class RestCtrlExceptionHandler {
             return new ResultUtil<>().error(ResultCodeEnums.UNAUTHORIZED, errorMsg);
         }
         return new ResultUtil<>().error(500, errorMsg);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result<Object> handleException(BadCredentialsException e) {
+        return new ResultUtil<>().error(500, "用户名或密码错误");
     }
 
     /**
