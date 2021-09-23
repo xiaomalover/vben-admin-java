@@ -68,10 +68,13 @@ logging:
   file:
     name: D:/logs/com.xm.admin.log
 
-upload:
-  rootPath: D:\uploads
-  domain: http://img.xm-bt.com/
-
+#文件存储
+storage:
+  #类型，localStorage本地; aliOssStorage阿里云OSS
+  type: localStorage
+  local:
+    rootPath: D:\uploads
+    domain: http://img.xm-bt.com/
 
 auth:
   config:

@@ -1,6 +1,5 @@
 package com.xm.admin.module.sys.controller;
 
-import cn.hutool.core.map.MapBuilder;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,13 +13,10 @@ import com.xm.common.utils.CommonPageUtil;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.ExtraVo;
 import com.xm.common.vo.Result;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,36 +32,10 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class SysAdminController {
 
-    final
-    ISysAdminService adminService;
+    final ISysAdminService adminService;
 
     public SysAdminController(ISysAdminService adminService) {
         this.adminService = adminService;
-    }
-
-    @GetMapping("/userInfo")
-    public Result<Object> userInfo() {
-
-        UserDetails user = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SysAdmin u = adminService.findUserDetailInfo(user.getUsername());
-        // 清除持久上下文环境 避免后面语句导致持久化
-        u.setPassword(null);
-
-        Map<String, Object> resultMap = new MapBuilder<String, Object>(new HashMap<>(8)).
-                put("roles", new ArrayList<String>())
-                .put("userId", u.getId())
-                .put("username", u.getUsername())
-                .put("realName", u.getNickname())
-                .put("avatar", u.getAvatar())
-                .put("desc", u.getDescription())
-                .build();
-
-        return new ResultUtil<>().success(resultMap);
-    }
-
-    @GetMapping("/logout")
-    public Result<Object> logout() {
-        return new ResultUtil<>().success();
     }
 
     @GetMapping("/getAccountList")

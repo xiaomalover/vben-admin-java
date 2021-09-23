@@ -1,9 +1,13 @@
 package com.xm.admin.module.sys.controller;
 
+import cn.hutool.core.map.MapBuilder;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.common.utils.SecurityUtil;
 import com.xm.admin.config.auth.security.UserPrincipal;
+import com.xm.admin.module.storage.service.IStorage;
+import com.xm.admin.module.storage.service.StorageFactory;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.payload.AccountEditRequest;
 import com.xm.admin.module.sys.payload.ModifyPasswordRequest;
@@ -11,10 +15,13 @@ import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,7 +35,14 @@ public class AccountController {
 
     final ISysAdminService adminService;
 
-    public AccountController(ISysAdminService adminService) {
+    final private IStorage storage;
+
+    public AccountController(
+            StorageFactory factoryForStrategy,
+            @Value("${storage.type}") String storageType,
+            ISysAdminService adminService
+    ) throws Exception {
+        this.storage = factoryForStrategy.getStorage(storageType + "Impl");
         this.adminService = adminService;
     }
 
@@ -43,9 +57,22 @@ public class AccountController {
         }
 
         SysAdmin admin = adminService.getById(user.getId());
-        admin.setPassword(null);
 
-        return new ResultUtil<>().success(admin);
+        //处理图像域名
+        String avatar = admin.getAvatar();
+        if(StrUtil.isNotBlank(avatar)) {
+            avatar = storage.getUrl(avatar);
+        }
+
+        Map<String, Object> resultMap = new MapBuilder<String, Object>(new HashMap<>(8))
+                .put("mobile", admin.getMobile())
+                .put("email", admin.getEmail())
+                .put("nickname", admin.getNickname())
+                .put("avatar", avatar)
+                .put("description", admin.getDescription())
+                .build();
+
+        return new ResultUtil<>().success(resultMap);
     }
 
     /**
@@ -77,6 +104,9 @@ public class AccountController {
         admin.setMobile(accountEditRequest.getMobile());
         admin.setNickname(accountEditRequest.getNickname());
         admin.setDescription(accountEditRequest.getDescription());
+        if (StrUtil.isNotBlank(accountEditRequest.getAvatar())) {
+            admin.setAvatar(accountEditRequest.getAvatar());
+        }
 
         if (adminService.updateById(admin)) {
             return new ResultUtil<>().success();

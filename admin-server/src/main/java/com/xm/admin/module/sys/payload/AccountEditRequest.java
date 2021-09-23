@@ -23,4 +23,6 @@ public class AccountEditRequest implements Serializable {
     private String nickname;
 
     private String description;
+
+    private String avatar;
 }

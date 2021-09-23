@@ -1,48 +1,32 @@
-package com.xm.admin.module.sys.controller;
+package com.xm.admin.module.storage.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.xm.admin.common.utils.ImageUtil;
+import com.xm.admin.module.storage.service.IStorage;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-/**
- * @author xiaomalover <xiaomalover@gmail.com>
- */
-@Slf4j
-@RestController
-@RequestMapping("/upload")
-public class UploadController {
+@Component
+public class LocalStorageImpl implements IStorage {
 
-    @Value("${upload.rootPath}")
+
+    @Value("${storage.local.rootPath}")
     private String imagePath;
 
-    @Value("${upload.domain}")
+    @Value("${storage.local.domain}")
     private String imageDomain;
 
-    @PostMapping("/articleThumb")
-    public Result<Object> uploadArticleThumb(@RequestParam(required = false) MultipartFile file) {
-        return doUpload(file, "articleThumb");
-    }
-
-    @PostMapping("/common")
-    public Result<Object> upload(
-            @RequestParam(required = false) MultipartFile file,
-            @RequestParam String folder
-    ) {
-        return doUpload(file, folder);
-    }
-
-    private Result<Object> doUpload(MultipartFile file, String folder) {
+    @Override
+    public Result<Object> upload(MultipartFile file, String folder) {
         try {
 
             String rootPath = imagePath;
@@ -78,17 +62,17 @@ public class UploadController {
             String fullUrl = imageDomain + folder + "/" + fileName;
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.set("fullUrl", fullUrl);
-            jsonObject.set("relative", folder + "/" + fileName);
+            jsonObject.set("url", fullUrl);
+            jsonObject.set("path", folder + "/" + fileName);
             return new ResultUtil<>().success(jsonObject);
         } catch (Exception e) {
-            log.error(e.toString());
             return new ResultUtil<>().error(e.toString());
         }
     }
 
-    @GetMapping(value = "/getDomain")
-    public Result<Object> getImageDomain() {
-        return new ResultUtil<>().success(imageDomain);
+    @Override
+    public String getUrl(String path) {
+        return imageDomain + path;
     }
+
 }
