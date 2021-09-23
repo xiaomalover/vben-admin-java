@@ -70,11 +70,17 @@ logging:
 
 #文件存储
 storage:
-  #类型，localStorage本地; aliOssStorage阿里云OSS
+  #当前驱动类型，localStorage本地; aliOssStorage阿里云OSS
   type: localStorage
   local:
     rootPath: D:\uploads
     domain: http://img.xm-bt.com/
+  alioss:
+    accessKeyId: xxxxxxxxxxxx
+    accessKeySecret: yyyyyyyyyyyyyyyyyyyyyyyy
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    bucketName: test
+    fileDir: xboot/demo
 
 auth:
   config:

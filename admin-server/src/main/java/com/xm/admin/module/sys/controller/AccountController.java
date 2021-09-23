@@ -65,6 +65,7 @@ public class AccountController {
         }
 
         Map<String, Object> resultMap = new MapBuilder<String, Object>(new HashMap<>(8))
+                .put("username", admin.getUsername())
                 .put("mobile", admin.getMobile())
                 .put("email", admin.getEmail())
                 .put("nickname", admin.getNickname())

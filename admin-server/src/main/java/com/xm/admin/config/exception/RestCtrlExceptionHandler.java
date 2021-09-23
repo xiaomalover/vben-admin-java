@@ -56,7 +56,7 @@ public class RestCtrlExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(value = HttpStatus.OK)
-    public Result<Object> handleException(BadCredentialsException e) {
+    public Result<Object> handleException() {
         return new ResultUtil<>().error(500, "用户名或密码错误");
     }
 
