@@ -41,4 +41,6 @@ public class MenuAddEditRequest implements Serializable {
     private Integer keepalive;
 
     private String permission;
+
+    private String currentActiveMenu;
 }

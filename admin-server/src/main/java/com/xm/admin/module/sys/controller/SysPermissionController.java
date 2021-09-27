@@ -12,14 +12,17 @@ import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.common.enums.ResultCodeEnums;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * <p>
@@ -31,6 +34,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/permission")
+@CacheConfig(cacheNames = "permission")
 public class SysPermissionController {
 
     private final ISysPermissionService permissionService;
@@ -289,9 +293,10 @@ public class SysPermissionController {
     @GetMapping("getMenuTree")
     public Result<Object> getMenuTree(
             @RequestParam(required = false) String menuName,
-            @RequestParam(required = false) Integer status
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Integer show
     ) {
-        return new ResultUtil<>().success(permissionService.getAllPermission(menuName, status));
+        return new ResultUtil<>().success(permissionService.getAllPermission(menuName, status, show));
     }
 
     @GetMapping("/getPermCode")
@@ -316,6 +321,7 @@ public class SysPermissionController {
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
         permission.setComponent(menuAddEditRequest.getComponent());
+        permission.setCurrentActiveMenu(menuAddEditRequest.getCurrentActiveMenu());
         if (SysPermission.TYPE_BTN.equals(menuAddEditRequest.getType())) {
             permission.setMethod(menuAddEditRequest.getMethod());
         }
@@ -338,7 +344,7 @@ public class SysPermissionController {
             }
 
             //手动删除缓存
-            redisTemplate.delete("permission::allPermissionCodes");
+            this.clearPermissionCache();
 
             //更新需要检验的权限map
             rbacAuthorityService.loadResourceDefine();
@@ -365,6 +371,7 @@ public class SysPermissionController {
         permission.setIsCache(menuAddEditRequest.getKeepalive());
         permission.setPermisionCode(menuAddEditRequest.getPermission());
         permission.setComponent(menuAddEditRequest.getComponent());
+        permission.setCurrentActiveMenu(menuAddEditRequest.getCurrentActiveMenu());
         if (SysPermission.TYPE_BTN.equals(menuAddEditRequest.getType())) {
             permission.setMethod(menuAddEditRequest.getMethod());
         }
@@ -386,7 +393,7 @@ public class SysPermissionController {
             }
 
             //手动删除缓存
-            redisTemplate.delete("permission::allPermissionCodes");
+            this.clearPermissionCache();
 
             //更新需要检验的权限map
             rbacAuthorityService.loadResourceDefine();
@@ -404,11 +411,25 @@ public class SysPermissionController {
         }
 
         //手动删除缓存
-        redisTemplate.delete("permission::allPermissionCodes");
+        this.clearPermissionCache();
 
         //更新需要检验的权限map
         rbacAuthorityService.loadResourceDefine();
 
         return new ResultUtil<>().error();
+    }
+
+    private void clearPermissionCache()
+    {
+        redisTemplate.delete("permission::allPermissionCodes");
+        Set<String> menuList = redisTemplate.keys("permission::adminMenuList:*");
+        if (!ObjectUtils.isEmpty(menuList)) {
+            redisTemplate.delete(menuList);
+        }
+
+        Set<String> userCodes = redisTemplate.keys("permission::userPermissionCodes:*");
+        if (!ObjectUtils.isEmpty(userCodes)) {
+            redisTemplate.delete(userCodes);
+        }
     }
 }

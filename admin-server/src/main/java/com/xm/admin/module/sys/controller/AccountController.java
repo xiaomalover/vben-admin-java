@@ -6,8 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xm.admin.common.utils.SecurityUtil;
 import com.xm.admin.config.auth.security.UserPrincipal;
-import com.xm.admin.module.storage.service.IStorage;
-import com.xm.admin.module.storage.service.StorageFactory;
 import com.xm.admin.module.sys.entity.SysAdmin;
 import com.xm.admin.module.sys.payload.AccountEditRequest;
 import com.xm.admin.module.sys.payload.ModifyPasswordRequest;
@@ -15,7 +13,6 @@ import com.xm.admin.module.sys.service.ISysAdminService;
 import com.xm.common.utils.ResultUtil;
 import com.xm.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,14 +32,9 @@ public class AccountController {
 
     final ISysAdminService adminService;
 
-    final private IStorage storage;
-
     public AccountController(
-            StorageFactory factoryForStrategy,
-            @Value("${storage.type}") String storageType,
             ISysAdminService adminService
     ) {
-        this.storage = factoryForStrategy.getStorage(storageType + "Impl");
         this.adminService = adminService;
     }
 
@@ -58,18 +50,12 @@ public class AccountController {
 
         SysAdmin admin = adminService.getById(user.getId());
 
-        //处理图像域名
-        String avatar = admin.getAvatar();
-        if(StrUtil.isNotBlank(avatar)) {
-            avatar = storage.getUrl(avatar);
-        }
-
         Map<String, Object> resultMap = new MapBuilder<String, Object>(new HashMap<>(8))
                 .put("username", admin.getUsername())
                 .put("mobile", admin.getMobile())
                 .put("email", admin.getEmail())
                 .put("nickname", admin.getNickname())
-                .put("avatar", avatar)
+                .put("avatar", admin.getAvatar())
                 .put("description", admin.getDescription())
                 .build();
 

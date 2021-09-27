@@ -21,9 +21,10 @@ public interface ISysPermissionService extends IService<SysPermission> {
      *
      * @param menuName 菜单名
      * @param status   状态
+     * @param show   展示状态
      * @return 菜单（权限）树
      */
-    List<Map<String, Object>> getAllPermission(String menuName, Integer status);
+    List<Map<String, Object>> getAllPermission(String menuName, Integer status, Integer show);
 
     /**
      * 获取菜单树

@@ -37,8 +37,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<Map<String, Object>> getAllPermission(String menuName, Integer status) {
-        List<Map<String, Object>> menuList = permissionMapper.selectAllPermissionListMap(menuName, status);
+    public List<Map<String, Object>> getAllPermission(String menuName, Integer status, Integer show) {
+        List<Map<String, Object>> menuList = permissionMapper.selectAllPermissionListMap(menuName, status, show);
         return formatTree(menuList);
     }
 
@@ -76,6 +76,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             if (ObjectUtil.isNotNull(x.get("show")) && Convert.toInt(x.get("show")) == 0) {
                 customMeta.put("hideMenu", true);
                 customMeta.put("showMenu", false);
+                customMeta.put("currentActiveMenu", x.get("currentActiveMenu"));
             }
             customMap.put("meta", customMeta);
             customList.add(customMap);

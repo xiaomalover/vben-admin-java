@@ -3,7 +3,7 @@
 
     <select id="selectAdminList" resultType="map">
         select a.id, a.username as account, FROM_UNIXTIME(a.created_at, "%Y-%m-%d") as createTime, a.email, a.nickname,
-        a.description as remark, a.role_id as role, r.name as roleName, a.department_id dept, d.name as deptName, a.status
+        a.description as remark, a.role_id as role, r.name as roleName, a.department_id dept, d.name as deptName, a.status, a.avatar
         from sys_admin a
         left join sys_department d on d.id = a.department_id
         left join sys_role r on r.id = a.role_id

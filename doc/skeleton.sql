@@ -16,6 +16,64 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`skeleton` /*!40100 DEFAULT CHARACTER SE
 
 USE `skeleton`;
 
+/*Table structure for table `con_article_category` */
+
+DROP TABLE IF EXISTS `con_article_category`;
+
+CREATE TABLE `con_article_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `description` varchar(64) NOT NULL DEFAULT '' COMMENT '描述',
+  `sort_order` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '排序',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0无效;1有效)',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `created_by` varchar(32) NOT NULL DEFAULT '' COMMENT '创建人',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+/*Data for the table `con_article_category` */
+
+insert  into `con_article_category`(`id`,`parent_id`,`name`,`description`,`sort_order`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
+(1,0,'新闻','新闻类主类',1.00,1,1632628674,'admin',1632628831,'admin'),
+(2,1,'最新资讯','所有最新资讯内容',1.00,1,1632628772,'admin',1632628823,'admin'),
+(3,1,'热门资讯','所有热点资讯内容',3.00,1,1632628800,'admin',1632628800,'admin'),
+(5,0,'站内资讯','公司内部资讯内容',2.00,1,1632628874,'admin',1632731549,'admin');
+
+/*Table structure for table `con_article_info` */
+
+DROP TABLE IF EXISTS `con_article_info`;
+
+CREATE TABLE `con_article_info` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文章分类ID',
+  `title` varchar(128) NOT NULL DEFAULT '' COMMENT '文章标题',
+  `thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '文章封面图',
+  `summary` text COMMENT '文章简介',
+  `content` longtext COMMENT '文章内容',
+  `author` varchar(32) DEFAULT NULL COMMENT '作者',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0无效;1有效)',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `created_by` varchar(32) NOT NULL DEFAULT '' COMMENT '创建人',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='文章表';
+
+/*Data for the table `con_article_info` */
+
+insert  into `con_article_info`(`id`,`category_id`,`title`,`thumb`,`summary`,`content`,`author`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
+(3,5,'ASDFASF','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','SADFAS','<p>ASFDASFDAS</p>',NULL,1,1632724471,'admin',1632724471,'admin'),
+(5,5,'SFASDF','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','ASFDASF','<p>SADFASFAS<img src=\"http://img.xm-bt.com/tinymce-upload/2021827/b03bffd09032838a5ede8ca054f80880.jpg\" /></p>',NULL,1,1632724529,'admin',1632724529,'admin'),
+(6,5,'SFASDF','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','ASFDASF','<p>SADFASFAS<img src=\"http://img.xm-bt.com/tinymce-upload/2021827/b03bffd09032838a5ede8ca054f80880.jpg\" /></p>',NULL,1,1632724530,'admin',1632724530,'admin'),
+(7,5,'SFASDF','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','ASFDASF','<p>SADFASFAS<img src=\"http://img.xm-bt.com/tinymce-upload/2021827/b03bffd09032838a5ede8ca054f80880.jpg\" /></p>',NULL,1,1632724532,'admin',1632724532,'admin'),
+(8,5,'SFASDF','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','ASFDASF','<p>SADFASFAS<img src=\"http://img.xm-bt.com/tinymce-upload/2021827/b03bffd09032838a5ede8ca054f80880.jpg\" /></p>',NULL,1,1632724539,'admin',1632724539,'admin'),
+(9,1,'苛','http://img.xm-bt.com/article-thumb/b03bffd09032838a5ede8ca054f80880.jpg','朝秦暮楚','<p>顶戴&nbsp;</p>',NULL,1,1632724596,'admin',1632730658,'admin'),
+(10,5,'模压苛','http://img.xm-bt.com/article-thumb/4cf6bbd0622ddb1f84d8ad519cbe0a80.jpg','基在在在','<p>苛苛苛茜革枯</p>',NULL,0,1632724664,'admin',1632731468,'admin'),
+(11,3,'测试一下','http://img.xm-bt.com/article-thumb/22181209a0562a4129b2dd2dce49e5e3.png','在在在','<p><img src=\"http://img.xm-bt.com/tinymce-upload/2021827/b03bffd09032838a5ede8ca054f80880.jpg\" />苛苛基本原则<img src=\"http://img.xm-bt.com/tinymce-upload/2021827/8be41d56a1862b116b59a5c2505467ef.png\" /></p>',NULL,1,1632728116,'admin',1632730669,'admin');
+
 /*Table structure for table `sys_admin` */
 
 DROP TABLE IF EXISTS `sys_admin`;
@@ -44,9 +102,8 @@ CREATE TABLE `sys_admin` (
 /*Data for the table `sys_admin` */
 
 insert  into `sys_admin`(`id`,`username`,`password`,`avatar`,`description`,`email`,`mobile`,`nickname`,`sex`,`status`,`role_id`,`department_id`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,'admin','$2a$10$sUX1MJTg/DPtIL5Fxh3ueOFQS/3E5qxQ85thj6YN/IZxXJp5UG9EC','','超级管理员','admin@admin.com','13888888888','超级管理员',1,1,9,1,1582959143,'admin',1632377621,'admin'),
-(2,'zhanshan','$2a$10$Wh6TSXP7EcF3nIbavAojvO88S7V36qvxNhr9lslI9RPQLyiwB/VMK','','测试人员1','admin@qq.com','13555555555','张三',1,1,1,3,1626834498,'admin',1632278610,'admin'),
-(4,'wangwu','$2a$10$u60W0dYcaNKydj1kut8cFudh83pwWuUqdHEGH430.8vjqcJDCd85K','','这是王大爷','b@ccc.com','','王五',0,1,9,16,1628822166,'admin',1632299917,'admin');
+(1,'admin','$2a$10$sUX1MJTg/DPtIL5Fxh3ueOFQS/3E5qxQ85thj6YN/IZxXJp5UG9EC','http://img.xm-bt.com/admin-avatar/b03bffd09032838a5ede8ca054f80880.jpg','超级管理员','admin@admin.com','13888888888','超级管理员',1,1,9,1,1582959143,'admin',1632710169,'admin'),
+(2,'zhanshan','$2a$10$Wh6TSXP7EcF3nIbavAojvO88S7V36qvxNhr9lslI9RPQLyiwB/VMK','','测试人员1','admin@qq.com','13555555555','张三',1,1,1,3,1626834498,'admin',1632278610,'admin');
 
 /*Table structure for table `sys_admin_log` */
 
@@ -149,6 +206,7 @@ CREATE TABLE `sys_permission` (
   `permision_code` varchar(128) NOT NULL DEFAULT '' COMMENT '权限标识',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0无效;1有效)',
   `is_display` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示',
+  `current_active_menu` varchar(255) NOT NULL DEFAULT '' COMMENT '当前激活菜单(类型为隐藏菜单时有效)',
   `is_external_link` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否外链',
   `is_cache` tinyint(3) unsigned DEFAULT '0' COMMENT '是否缓存',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
@@ -156,32 +214,46 @@ CREATE TABLE `sys_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 /*Data for the table `sys_permission` */
 
-insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`method`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
-(1,0,'系统管理',0,'1','',1.00,'ant-design:setting-outlined','/system','','',1,1,0,0,1629079245,'admin',1631958598,'admin'),
-(2,1,'账号管理',1,'1,2','',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,1,0,1,1629088689,'admin',1629958526,'admin'),
-(3,1,'角色管理',1,'1,3','',2.00,'ant-design:experiment-filled','/system/role','/demo/system/role/index','system:role',1,1,0,1,1629088812,'admin',1629958529,'admin'),
-(4,1,'菜单管理',1,'1,4','',3.00,'ant-design:unordered-list-outlined','/system/menu','/demo/system/menu/index','system:menu',1,1,0,1,1629088897,'admin',1629958531,'admin'),
-(5,1,'部门管理',1,'1,5','',3.00,'ant-design:appstore-filled','/system/department','/demo/system/dept/index','system:dept',1,1,0,1,1629088944,'admin',1630294865,'admin'),
-(6,1,'首页',0,'6','',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,0,0,1629521812,'admin',1629958521,'admin'),
-(13,2,'编辑菜单',4,'1,4,13','POST',4.00,'','/permission/edit','','menu:btn:edit',1,0,0,0,1629521812,'admin',1630300030,'admin'),
-(40,2,'修改密码',37,'1,37,40','POST',2.00,'','/account/changePassword','','setting:btn:password',1,1,0,0,1632283394,'admin',1632290580,'admin'),
-(39,2,'修改基本信息',37,'1,37,39','POST',0.00,'','/account/edit','','setting:btn:basic',1,1,0,0,1632283251,'admin',1632297136,'admin'),
-(15,2,'添加菜单',4,'1,4,15','POST',3.00,'','/permission/add','','menu:btn:add',1,1,0,0,1629521812,'admin',1630300014,'admin'),
-(18,2,'编辑角色',3,'1,3,18','POST',3.00,'','/role/edit','','role:btn:edit',1,1,0,0,1630294225,'admin',1630299341,'admin'),
-(20,2,'添加部门',5,'1,5,20','POST',2.00,'','/department/add','','dept:btn:add',1,1,0,0,1630295445,'admin',1630295445,'admin'),
-(21,2,'编辑部门',5,'1,5,21','POST',3.00,'','/department/edit','','dept:btn:edit',1,1,0,0,1630295482,'admin',1630295482,'admin'),
-(22,2,'添加帐号',2,'1,2,22','POST',3.00,'','/admin/add','','admin:btn:add',1,1,0,0,1630298703,'admin',1630298703,'admin'),
-(23,2,'编辑帐号',2,'1,2,23','POST',3.00,'','/admin/edit','','admin:btn:edit',1,1,0,0,1630298743,'admin',1630298743,'admin'),
-(24,2,'删除帐号',2,'1,2,24','DELETE',4.00,'','/admin/delete/*','','admin:btn:delete',1,1,0,0,1630298780,'admin',1630299095,'admin'),
-(26,2,'添加角色',3,'1,3,26','POST',2.00,'','/role/add','','role:btn:add',1,1,0,0,1630299327,'admin',1630299327,'admin'),
-(27,2,'删除角色',3,'1,3,27','DELETE',5.00,'','/role/delete/*','','role:btn:delete',1,1,0,0,1630299397,'admin',1630299563,'admin'),
-(28,2,'删除部门',5,'1,5,28','DELETE',4.00,'','/department/delete/*','','dept:btn:delete',1,1,0,0,1630299886,'admin',1630299903,'admin'),
-(37,1,'个人设置',1,'1,37','',0.00,'ant-design:info-circle-filled','/account-setting','/demo/page/account/setting/index','account:setting',1,0,0,0,1632280083,'admin',1632290522,'admin'),
-(29,2,'删除菜单',4,'1,4,29','DELETE',5.00,'','/permission/delete/*','','menu:btn:delete',1,1,0,0,1630300134,'admin',1630300134,'admin');
+insert  into `sys_permission`(`id`,`type`,`name`,`parent_id`,`path`,`method`,`sort_order`,`icon`,`url`,`component`,`permision_code`,`status`,`is_display`,`current_active_menu`,`is_external_link`,`is_cache`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
+(1,0,'系统管理',0,'1','',1.00,'ant-design:setting-outlined','/system','','',1,1,'',0,0,1629079245,'admin',1632623064,'admin'),
+(2,1,'账号管理',1,'1,2','',1.00,'ant-design:usergroup-add-outlined','/system/account','/demo/system/account/index','system:account',1,1,'',0,1,1629088689,'admin',1629958526,'admin'),
+(3,1,'角色管理',1,'1,3','',2.00,'ant-design:experiment-filled','/system/role','/demo/system/role/index','system:role',1,1,'',0,1,1629088812,'admin',1629958529,'admin'),
+(4,1,'菜单管理',1,'1,4','',3.00,'ant-design:unordered-list-outlined','/system/menu','/demo/system/menu/index','system:menu',1,1,'',0,1,1629088897,'admin',1629958531,'admin'),
+(5,1,'部门管理',1,'1,5','',3.00,'ant-design:appstore-filled','/system/department','/demo/system/dept/index','system:dept',1,1,'',0,1,1629088944,'admin',1630294865,'admin'),
+(6,1,'首页',0,'6','',0.00,'ant-design:home-outlined','/dashboard','/dashboard/analysis/index','dashboard:home',1,1,'',0,0,1629521812,'admin',1629958521,'admin'),
+(13,2,'编辑菜单',4,'1,4,13','POST',4.00,'','/permission/edit','','menu:btn:edit',1,0,'',0,0,1629521812,'admin',1630300030,'admin'),
+(44,1,'文章列表',42,'41,42,44','',2.00,'ant-design:book-twotone','/content/article/info','/content/article/info/index','article:info',1,1,'',0,0,1632620703,'admin',1632731137,'admin'),
+(41,0,'内容管理',0,'41','',0.90,'ant-design:switcher-filled','/content','','',1,1,'',0,0,1632620349,'admin',1632634632,'admin'),
+(40,2,'修改密码',37,'1,37,40','POST',2.00,'','/account/changePassword','','setting:btn:password',1,1,'',0,0,1632283394,'admin',1632290580,'admin'),
+(39,2,'修改基本信息',37,'1,37,39','POST',0.00,'','/account/edit','','setting:btn:basic',1,1,'',0,0,1632283251,'admin',1632297136,'admin'),
+(15,2,'添加菜单',4,'1,4,15','POST',3.00,'','/permission/add','','menu:btn:add',1,1,'',0,0,1629521812,'admin',1630300014,'admin'),
+(43,1,'分类列表',42,'41,42,43','',1.00,'ant-design:align-center-outlined','/content/article/category','/content/article/category/index','article:category',1,1,'',0,0,1632620594,'admin',1632641367,'admin'),
+(18,2,'编辑角色',3,'1,3,18','POST',3.00,'','/role/edit','','role:btn:edit',1,1,'',0,0,1630294225,'admin',1630299341,'admin'),
+(20,2,'添加部门',5,'1,5,20','POST',2.00,'','/department/add','','dept:btn:add',1,1,'',0,0,1630295445,'admin',1630295445,'admin'),
+(21,2,'编辑部门',5,'1,5,21','POST',3.00,'','/department/edit','','dept:btn:edit',1,1,'',0,0,1630295482,'admin',1630295482,'admin'),
+(22,2,'添加帐号',2,'1,2,22','POST',3.00,'','/admin/add','','admin:btn:add',1,1,'',0,0,1630298703,'admin',1630298703,'admin'),
+(23,2,'编辑帐号',2,'1,2,23','POST',3.00,'','/admin/edit','','admin:btn:edit',1,1,'',0,0,1630298743,'admin',1630298743,'admin'),
+(24,2,'删除帐号',2,'1,2,24','DELETE',4.00,'','/admin/delete/*','','admin:btn:delete',1,1,'',0,0,1630298780,'admin',1630299095,'admin'),
+(26,2,'添加角色',3,'1,3,26','POST',2.00,'','/role/add','','role:btn:add',1,1,'',0,0,1630299327,'admin',1630299327,'admin'),
+(27,2,'删除角色',3,'1,3,27','DELETE',5.00,'','/role/delete/*','','role:btn:delete',1,1,'',0,0,1630299397,'admin',1630299563,'admin'),
+(42,0,'文章管理',41,'41,42','',1.00,'ant-design:book-twotone','/content/article','','',1,1,'',0,0,1632620433,'admin',1632620433,'admin'),
+(28,2,'删除部门',5,'1,5,28','DELETE',4.00,'','/department/delete/*','','dept:btn:delete',1,1,'',0,0,1630299886,'admin',1630299903,'admin'),
+(37,1,'个人设置',1,'1,37','',0.00,'ant-design:info-circle-filled','/account-setting','/demo/page/account/setting/index','account:setting',1,0,'',0,0,1632280083,'admin',1632290522,'admin'),
+(29,2,'删除菜单',4,'1,4,29','DELETE',5.00,'','/permission/delete/*','','menu:btn:delete',1,1,'',0,0,1630300134,'admin',1630300134,'admin'),
+(48,2,'添加分类',43,'41,42,43,48','POST',1.00,'','/article/category/add','','article-category:btn:add',1,1,'',0,0,1632624513,'admin',1632624547,'admin'),
+(49,2,'编辑分类',43,'41,42,43,49','POST',2.00,'','/article/category/edit','','article-category:btn:edit',1,1,'',0,0,1632624602,'admin',1632624602,'admin'),
+(50,2,'删除分类',43,'41,42,43,50','DELETE',3.00,'','/article/category/delete','','article-category:btn:delete',1,1,'',0,0,1632624661,'admin',1632624661,'admin'),
+(51,1,'文章详情',42,'41,42,51','',3.60,'','article_detail/:id','/content/article/info/ArticleDetail','',1,0,'/content/article/info',0,0,1632635696,'admin',1632641629,'admin'),
+(52,2,'添加文章',44,'41,42,44,52','POST',2.00,'','/article/add','','article:btn:add',1,1,'',0,0,1632635734,'admin',1632635734,'admin'),
+(53,2,'编辑文章',44,'41,42,44,53','POST',3.00,'','/article/edit/*','','article:btn:edit',1,1,'',0,0,1632635778,'admin',1632635778,'admin'),
+(54,2,'删除文章',44,'41,42,44,54','DELETE',4.00,'','article/delete/*','','article:btn:delete',1,1,'',0,0,1632635813,'admin',1632635813,'admin'),
+(56,2,'查看详情',44,'41,42,44,56','GET',1.00,'','/article/detail/*','','article:btn:detail',1,1,'',0,0,1632640875,'admin',1632640875,'admin'),
+(57,1,'编辑文章',42,'41,42,57','',3.10,'','article_edit','/content/article/info/ArticleAddOrEdit','',1,0,'/content/article/info',0,0,1632641345,'admin',1632718034,'admin'),
+(58,1,'添加文章',42,'41,42,58','',3.00,'','article_add','/content/article/info/ArticleAddOrEdit','',1,0,'/content/article/info',0,0,1632641599,'admin',1632642095,'admin');
 
 /*Table structure for table `sys_role` */
 
@@ -204,7 +276,7 @@ CREATE TABLE `sys_role` (
 
 insert  into `sys_role`(`id`,`name`,`code`,`description`,`status`,`created_at`,`created_by`,`updated_at`,`updated_by`) values 
 (1,'测试角色','ROLE_TEST','测试角色',1,1628833064,'admin',1632297304,'admin'),
-(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1632297256,'admin');
+(9,'超级管理员','ROLE_ADMIN','超级管理员角色',1,1629089045,'admin',1632731195,'admin');
 
 /*Table structure for table `sys_role_permission` */
 
@@ -219,7 +291,7 @@ CREATE TABLE `sys_role_permission` (
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `updated_by` varchar(32) NOT NULL DEFAULT '' COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=138 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=156 DEFAULT CHARSET=utf8 COMMENT='角色权限关联表';
 
 /*Data for the table `sys_role_permission` */
 
@@ -267,7 +339,24 @@ insert  into `sys_role_permission`(`id`,`permission_id`,`role_id`,`created_at`,`
 (132,37,9,1632280251,'admin',1632280251,'admin'),
 (133,38,9,1632280251,'admin',1632280251,'admin'),
 (137,40,9,1632297256,'admin',1632297256,'admin'),
-(136,39,9,1632297256,'admin',1632297256,'admin');
+(136,39,9,1632297256,'admin',1632297256,'admin'),
+(138,41,9,1632620920,'admin',1632620920,'admin'),
+(139,42,9,1632620920,'admin',1632620920,'admin'),
+(140,45,9,1632620920,'admin',1632620920,'admin'),
+(141,43,9,1632620920,'admin',1632620920,'admin'),
+(142,44,9,1632620920,'admin',1632620920,'admin'),
+(143,46,9,1632620920,'admin',1632620920,'admin'),
+(144,47,9,1632620920,'admin',1632620920,'admin'),
+(145,48,9,1632625586,'admin',1632625586,'admin'),
+(146,49,9,1632625586,'admin',1632625586,'admin'),
+(147,50,9,1632625586,'admin',1632625586,'admin'),
+(152,51,9,1632640406,'admin',1632640406,'admin'),
+(149,52,9,1632635834,'admin',1632635834,'admin'),
+(150,53,9,1632635834,'admin',1632635834,'admin'),
+(151,54,9,1632635834,'admin',1632635834,'admin'),
+(153,56,9,1632641035,'admin',1632641035,'admin'),
+(154,58,9,1632642662,'admin',1632642662,'admin'),
+(155,57,9,1632642662,'admin',1632642662,'admin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

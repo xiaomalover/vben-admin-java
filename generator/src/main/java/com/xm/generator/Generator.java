@@ -42,10 +42,10 @@ public class Generator {
 
         String projectName = "admin-server";
         String packageName = "admin";
-        String moduleName = "sys";
+        String moduleName = "content";
         String superEntityClass = "com.xm.common.entity.BaseEntity";
 
-        List<String> tableNameList = Arrays.asList("sys_admin", "sys_admin_log", "sys_department", "sys_permission", "sys_role", "sys_role_permission");
+        List<String> tableNameList = Arrays.asList("con_article_category", "con_article_info");
 
         System.out.println("#########################################################################################");
         System.out.println("项目名(如管理后台，输入admin-server):" + projectName);

@@ -91,6 +91,11 @@ public class SysPermission extends BaseEntity{
     private Integer isDisplay;
 
     /**
+     * 当前激活菜单(类型为隐藏菜单时有效)
+     */
+    private String currentActiveMenu;
+
+    /**
      * 是否外链
      */
     private Integer isExternalLink;

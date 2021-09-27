@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.admin.module.content.mapper.ConArticleCategoryMapper">
+    <select id="selectAllCategoryListMap" resultType="map">
+        select id, parent_id as parentCategory, name as categoryName, description as remark, sort_order as orderNo,
+        parent_id as parentDept, FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, status
+        from con_article_category
+        where status != 2
+
+        <if test="categoryName != null and categoryName != ''">
+            AND name like '%${categoryName}%'
+        </if>
+
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+
+        order by sort_order asc
+    </select>
+</mapper>

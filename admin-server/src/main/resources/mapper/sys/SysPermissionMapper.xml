@@ -3,7 +3,7 @@
     <select id="selectAllPermissionListMap" resultType="map">
         select id, url as routePath, `name` as menuName, component, parent_id as parentMenu, `type`, sort_order as orderNo,
         icon, permision_code as permission, status, is_external_link as isExt, is_cache as keepalive, is_display as `show`,
-        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, method
+        FROM_UNIXTIME(created_at, "%Y-%m-%d") as createTime, method, current_active_menu as currentActiveMenu
         from sys_permission
         where status != 2
 
@@ -15,13 +15,17 @@
             AND status = #{status}
         </if>
 
+        <if test="show != null">
+            AND is_display = #{show}
+        </if>
+
         order by sort_order asc
     </select>
 
     <select id="selectUserPermissionListMap" resultType="map">
         select p.id, p.url as routePath, p.`name` as menuName, p.component, p.parent_id as parentMenu, p.`type`, p.sort_order as orderNo,
         p.icon, p.permision_code as permission, p.status, p.is_external_link as isExt, p.is_cache as keepalive, p.is_display as `show`,
-        FROM_UNIXTIME(p.created_at, "%Y-%m-%d") as createTime, p.method
+        FROM_UNIXTIME(p.created_at, "%Y-%m-%d") as createTime, p.method, P.current_active_menu as currentActiveMenu
         from sys_permission as p
         left join sys_role_permission as rp on rp.permission_id = p.id
         left join sys_admin as a on a.role_id = rp.role_id
