@@ -5,12 +5,11 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xm.admin.common.annotation.SystemLog;
 import com.xm.admin.config.exception.BaseException;
 import com.xm.admin.module.sys.payload.RoleAddEditRequest;
-import com.xm.admin.module.sys.entity.SysPermission;
 import com.xm.admin.module.sys.entity.SysRole;
 import com.xm.admin.module.sys.entity.SysRolePermission;
-import com.xm.admin.module.sys.service.ISysPermissionService;
 import com.xm.admin.module.sys.service.ISysRolePermissionService;
 import com.xm.admin.module.sys.service.ISysRoleService;
 import com.xm.common.enums.ResultCodeEnums;
@@ -42,14 +41,11 @@ public class SysRoleController {
 
     private final ISysRolePermissionService rolePermissionService;
 
-    private final ISysPermissionService permissionService;
-
     private final StringRedisTemplate redisTemplate;
 
-    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService, ISysPermissionService permissionService, StringRedisTemplate redisTemplate) {
+    public SysRoleController(ISysRoleService roleService, ISysRolePermissionService rolePermissionService, StringRedisTemplate redisTemplate) {
         this.roleService = roleService;
         this.rolePermissionService = rolePermissionService;
-        this.permissionService = permissionService;
         this.redisTemplate = redisTemplate;
     }
 
@@ -95,6 +91,7 @@ public class SysRoleController {
     }
 
     @PostMapping("/add")
+    @SystemLog(description = "添加角色")
     @Transactional(rollbackFor = Exception.class)
     public Result<Object> add(@Valid RoleAddEditRequest roleAddEditRequest) {
         //查询用户是否已存在
@@ -133,6 +130,7 @@ public class SysRoleController {
     }
 
     @PostMapping("/edit")
+    @SystemLog(description = "编辑角色")
     @Transactional(rollbackFor = Exception.class)
     public Result<Object> edit(@Valid RoleAddEditRequest roleAddEditRequest) {
         SysRole sysRole = roleService.getById(roleAddEditRequest.getId());
@@ -216,6 +214,7 @@ public class SysRoleController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @SystemLog(description = "删除角色")
     @Transactional(rollbackFor = Exception.class)
     public Result<Object> edit(@PathVariable String id) {
         if (!roleService.removeById(id)) {

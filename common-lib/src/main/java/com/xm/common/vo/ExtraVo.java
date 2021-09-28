@@ -43,8 +43,14 @@ public class ExtraVo implements Serializable {
     }
 
     private Long stringToTimestamp(String time) {
+
+        //兼容带时间的
+        if (time.length() > 10) {
+            time = time.substring(0, 10);
+        }
+
         time += " 00:00:00";
-        Long timestamp = 0L;
+        long timestamp = 0L;
         try {
             timestamp = ((Timestamp.valueOf(time).getTime()) / 1000);
         } catch (Exception e) {

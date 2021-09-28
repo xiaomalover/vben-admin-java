@@ -67,6 +67,7 @@ public class SysAdminController {
     }
 
     @PostMapping("/add")
+    @SystemLog(description = "添加管理用户")
     public Result<Object> add(@Valid AdminAddRequest adminAddRequest) {
         //查询用户是否已存在
         QueryWrapper<SysAdmin> queryWrapper = new QueryWrapper<>();
@@ -124,6 +125,7 @@ public class SysAdminController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @SystemLog(description = "删除管理用户")
     public Result<Object> edit(@PathVariable String id) {
         if (adminService.removeById(id)) {
             return new ResultUtil<>().success(true);

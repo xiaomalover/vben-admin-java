@@ -1,5 +1,6 @@
 package com.xm.admin.module.sys.controller;
 
+import com.xm.admin.common.annotation.SystemLog;
 import com.xm.admin.module.sys.payload.DepartmentAddEditRequest;
 import com.xm.admin.module.sys.entity.SysDepartment;
 import com.xm.admin.module.sys.service.ISysDepartmentService;
@@ -38,6 +39,7 @@ public class SysDepartmentController {
     }
 
     @PostMapping("/add")
+    @SystemLog(description = "添加部门")
     public Result<Object> add(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
         SysDepartment sysDepartment = new SysDepartment();
         sysDepartment.setName(departmentAddEditRequest.getDeptName());
@@ -53,6 +55,7 @@ public class SysDepartmentController {
     }
 
     @PostMapping("/edit")
+    @SystemLog(description = "编辑部门")
     public Result<Object> edit(@Valid @ModelAttribute DepartmentAddEditRequest departmentAddEditRequest) {
         SysDepartment sysDepartment = departmentService.getById(departmentAddEditRequest.getId());
         sysDepartment.setName(departmentAddEditRequest.getDeptName());
@@ -68,6 +71,7 @@ public class SysDepartmentController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @SystemLog(description = "删除部门")
     public Result<Object> edit(@PathVariable String id) {
         if (departmentService.removeById(id)) {
             return new ResultUtil<>().success(true);
