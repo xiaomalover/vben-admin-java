@@ -76,8 +76,8 @@ storage:
     rootPath: D:\uploads
     domain: http://img.xm-bt.com/
   alioss:
-    accessKeyId: xxxxxxxxxxxx
-    accessKeySecret: yyyyyyyyyyyyyyyyyyyyyyyy
+    accessKeyId: aaaaaaaaaaaaa
+    accessKeySecret: bbbbbbbbbbbbbbbbbbbbb
     endpoint: https://oss-cn-beijing.aliyuncs.com
     bucketName: test
     fileDir: xboot/demo

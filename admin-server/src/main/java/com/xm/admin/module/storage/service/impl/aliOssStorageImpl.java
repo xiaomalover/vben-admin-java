@@ -104,7 +104,10 @@ public class aliOssStorageImpl implements IStorage {
         // 生成URL
         URL url = ossClient.generatePresignedUrl(bucketName, fullFileName, expiration);
         if (url != null) {
-            return url.toString();
+            String[] imgArr = url.toString().split("\\?");
+            if (imgArr.length > 0) {
+                return imgArr[0];
+            }
         }
         return "";
     }
