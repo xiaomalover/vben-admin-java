@@ -1,7 +1,7 @@
 server:
   port: 20004
   servlet:
-    context-path: /skeleton
+    context-path: /
 
 # 配置文件加密key
 jasypt:
@@ -93,6 +93,10 @@ auth:
         - "/test/*"
       get:
         - "/captcha/getCaptcha"
+        - "/assets/**"
+        - "/resource/**"
+        - "/"
+        - "/*.*"
 
 jwt:
   config:
