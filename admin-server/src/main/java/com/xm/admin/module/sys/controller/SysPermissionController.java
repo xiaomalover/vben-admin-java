@@ -127,6 +127,11 @@ public class SysPermissionController {
     @SystemLog(description = "编辑菜单权限")
     @Transactional(rollbackFor = Exception.class)
     public Result<Object> edit(@Valid @ModelAttribute MenuAddEditRequest menuAddEditRequest) {
+
+        if (ObjectUtil.isNull(menuAddEditRequest.getParentMenu())) {
+            menuAddEditRequest.setParentMenu(0);
+        }
+
         SysPermission permission = permissionService.getById(menuAddEditRequest.getId());
         permission.setType(menuAddEditRequest.getType());
         permission.setName(menuAddEditRequest.getMenuName());
